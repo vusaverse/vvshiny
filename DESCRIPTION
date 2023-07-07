@@ -1,0 +1,42 @@
+Package: vvshiny
+Title: Create complex shiny apps more easily
+Version: 0.0.4.9000
+Authors@R: 
+  person(
+    given = "Corneel", 
+    family = "Den Hartogh", 
+    role = c("aut", "cre", "cph"), 
+    email = "c.f.den.hartogh@vu.nl",
+    comment = c(ORCID = "0000-0001-8347-7944"))
+Description: Helper and Wrapper functions for making shinydasboards more easily. Functions are made modular so choices can be made on more than one level.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports: 
+  dplyr,
+  magrittr,
+  purrr,
+  rlang,
+  stringr,
+  shiny,
+  shinyWidgets,
+  htmltools,
+  ggplot2,
+  DT,
+  ggalluvial,
+  RColorBrewer,
+  plotly,
+  forcats,
+  ggpubr,
+  htmlwidgets,
+  scales,
+  spsComps,
+  stats,
+  shinycssloaders
+Suggests: 
+  knitr,
+  rmarkdown,
+  testthat (>= 3.0.0)
+VignetteBuilder: knitr
+Config/testthat/edition: 3

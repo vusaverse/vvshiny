@@ -1,0 +1,6 @@
+default:
+  opleidings_naam: "INS_Opleidingsnaam_2002"
+  faculteit: "INS_Faculteit"
+  inschrijvingsjaar: "INS_Inschrijvingsjaar"
+  Network_directory: "G:/DSZ/SA2016/Datasets/"
+
