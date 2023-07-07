@@ -1,5 +1,4 @@
 test_that("basic_plot function test", {
-
   ## TODO Errors are often generated when print, so a print function as well
   print_basic_plot <- function(...) {
     print(basic_plot(...))
@@ -25,20 +24,20 @@ test_that("basic_plot function test", {
   expect_error(
     print_basic_plot(df, "non_existent", "y_var", "color_var", xlab_setting, ylab_setting, ggplot_instellingen, "bottom", scale_y),
     "object 'non_existent' not found"
-    )
+  )
 
-#   # Test 4: Check if the function fails gracefully with NULL data frame
-#   expect_error(basic_plot(NULL, "x_var", "y_var", "color_var", xlab_setting, ylab_setting, ggplot_instellingen, "bottom", scale_y), "data must be a data frame")
-#
-#   # Test 5: Check if the function fails gracefully with non-string input for x, y, color
-#   expect_error(basic_plot(df, 1, "y_var", "color_var", xlab_setting, ylab_setting, ggplot_instellingen, "bottom", scale_y), "character argument expected")
-#
-#   # Test 6: Check if the function fails gracefully with non-ggplot object for xlab_setting, ylab_setting, ggplot_instellingen
-#   expect_error(basic_plot(df, "x_var", "y_var", "color_var", "wrong input", ylab_setting, ggplot_instellingen, "bottom", scale_y), "ggplot object expected")
-#
-#   # Test 7: Check if the function fails gracefully with incorrect legend_position
-#   expect_error(basic_plot(df, "x_var", "y_var", "color_var", xlab_setting, ylab_setting, ggplot_instellingen, "wrong_position", scale_y), "invalid legend position")
-#
+  #   # Test 4: Check if the function fails gracefully with NULL data frame
+  #   expect_error(basic_plot(NULL, "x_var", "y_var", "color_var", xlab_setting, ylab_setting, ggplot_instellingen, "bottom", scale_y), "data must be a data frame")
+  #
+  #   # Test 5: Check if the function fails gracefully with non-string input for x, y, color
+  #   expect_error(basic_plot(df, 1, "y_var", "color_var", xlab_setting, ylab_setting, ggplot_instellingen, "bottom", scale_y), "character argument expected")
+  #
+  #   # Test 6: Check if the function fails gracefully with non-ggplot object for xlab_setting, ylab_setting, ggplot_instellingen
+  #   expect_error(basic_plot(df, "x_var", "y_var", "color_var", "wrong input", ylab_setting, ggplot_instellingen, "bottom", scale_y), "ggplot object expected")
+  #
+  #   # Test 7: Check if the function fails gracefully with incorrect legend_position
+  #   expect_error(basic_plot(df, "x_var", "y_var", "color_var", xlab_setting, ylab_setting, ggplot_instellingen, "wrong_position", scale_y), "invalid legend position")
+  #
 })
 
 #
@@ -71,7 +70,7 @@ test_that("basic_plot function test", {
 #   expect_equal(ggplot2::ggplot_build(plot)$layout$legend$position, "none")
 # })
 
-#1 / "a"
+# 1 / "a"
 
 # test <- basic_plot(df, "non_existent", "y_var", "color_var", xlab_setting, ylab_setting, ggplot_instellingen, "bottom", scale_y)
 #

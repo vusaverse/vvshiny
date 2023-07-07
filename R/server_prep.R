@@ -11,17 +11,15 @@
 #' @return A summarized dataframe
 #' @export
 prep_df_summ <- function(df, variables, y) {
-
-
-
   ## Groups by provided variables, summarizes the y-variable and counts number of observations
   ## per group
   df_summarized <- df %>%
     dplyr::group_by(dplyr::across(dplyr::all_of(variables))) %>%
     dplyr::summarize(
       !!rlang::sym(y) := ifelse(y == "Geen",
-                                NA,
-                                round(mean(!!rlang::sym(y), na.rm = TRUE), 3)),
+        NA,
+        round(mean(!!rlang::sym(y), na.rm = TRUE), 3)
+      ),
       Aantal = dplyr::n()
     ) %>%
     dplyr::ungroup()
@@ -45,9 +43,7 @@ prep_df_summ <- function(df, variables, y) {
 #'
 #' @return A summarized and aggregated dataframe arranged by color
 #' @export
-prep_df_summ_aggr <- function (df, variables, y, color, total_n_var = rlang::sym("INS_Aantal_eerstejaars"), aggr_split_value_var = rlang::sym("INS_Splits_variabele_waarde")) {
-
-
+prep_df_summ_aggr <- function(df, variables, y, color, total_n_var = rlang::sym("INS_Aantal_eerstejaars"), aggr_split_value_var = rlang::sym("INS_Splits_variabele_waarde")) {
   ## Groups by provided variables, calculates weighted mean for y-variable, sums up total count per group and arranges by color
   df_summarized <- df %>%
     dplyr::group_by(dplyr::across(dplyr::all_of(variables))) %>%
@@ -57,11 +53,13 @@ prep_df_summ_aggr <- function (df, variables, y, color, total_n_var = rlang::sym
       #   sum(!!rlang::sym(input$y_left), na.rm = TRUE) / sum(!!total_n_var, na.rm = TRUE),
       #   3),
       ## Calculates weighted average
-      !!rlang::sym(y) :=  round(
+      !!rlang::sym(y) := round(
         sum(
-          (!!rlang::sym(y) * !!total_n_var), na.rm = TRUE
+          (!!rlang::sym(y) * !!total_n_var),
+          na.rm = TRUE
         ) / sum(!!total_n_var, na.rm = TRUE),
-        3),
+        3
+      ),
       Aantal = sum(!!total_n_var)
     ) %>%
     dplyr::ungroup() %>%

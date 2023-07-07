@@ -7,7 +7,6 @@
 #' @return A character vector containing the JavaScript code.
 #' @export
 header_callback <- function(data = data) {
-
   ## De r code heeft geen toegang tot het data-object uit de Javascript functie.
   ## Voeg dit daarom toe als optionele variabele
   ## TODO: minLength instelbaar maken obv breedte bovenliggend element
@@ -17,20 +16,23 @@ header_callback <- function(data = data) {
   c(
     "function(thead, data, start, end, display){",
     "  var ncols = data[0].length;",
-    sprintf("  var shortnames = [%s]",
-            paste0(paste0(
-              "'", abbreviate(names(data), minlength = 7), "'"
-            ), collapse = ",")),
-    sprintf("  var tooltips = [%s];",
-            paste0(paste0(
-              "'", names(data), "'"
-            ), collapse = ",")),
+    sprintf(
+      "  var shortnames = [%s]",
+      paste0(paste0(
+        "'", abbreviate(names(data), minlength = 7), "'"
+      ), collapse = ",")
+    ),
+    sprintf(
+      "  var tooltips = [%s];",
+      paste0(paste0(
+        "'", names(data), "'"
+      ), collapse = ",")
+    ),
     "  for(var i=0; i<ncols; i++){",
     "    $('th:eq('+i+')',thead).attr('title', tooltips[i]).text(shortnames[i]);",
     "  }",
     "}"
   )
-
 }
 
 #' Generate Javascript for datatable cell values.
@@ -41,7 +43,6 @@ header_callback <- function(data = data) {
 #' @return A character vector containing the JavaScript code.
 #' @export
 value_callback <- function(data) {
-
   ## TODO: lengte instelbaar maken obv breedte bovenliggend element
   ## Zie comment bij: https://vustudentanalytics.atlassian.net/browse/VUSASOFT-3541
 
@@ -81,21 +82,20 @@ add_with_limit_header_JS <- function(options, data) {
 #' @return The updated list of datatable options.
 #' @export
 add_width_limit_values_JS <- function(options, data) {
-
-  valueJS = list(targets = "_all",
-                 render = htmlwidgets::JS(value_callback(data))
+  valueJS <- list(
+    targets = "_all",
+    render = htmlwidgets::JS(value_callback(data))
   )
 
   ## Extract current columnDefs internal lists (if set)
   ## Add valueJS to it and set new ColumnDefs
   ## INFO Code is a bit complex, but this method ensures it works also when columnDefs aren't set
   new_columns_options <- append(options["columnDefs"] %>% unname() %>% rlang::flatten(), list(valueJS))
-  new_columns_options <- stats::setNames(list(new_columns_options), 'columnDefs')
+  new_columns_options <- stats::setNames(list(new_columns_options), "columnDefs")
 
   options["columnDefs"] <- new_columns_options
 
   return(options)
-
 }
 
 
@@ -110,15 +110,17 @@ basic_options <- function() {
     language = list(url = "//cdn.datatables.net/plug-ins/1.10.11/i18n/Dutch.json"),
     pagingType = "full",
     deferRender = TRUE,
-    #dom = 'lfrti<"table-button"B>p',
-    #dom = "<'table-button'B><lf><t><'row'<'col-sm-4'i><'col-sm-8'p>>",
+    # dom = 'lfrti<"table-button"B>p',
+    # dom = "<'table-button'B><lf><t><'row'<'col-sm-4'i><'col-sm-8'p>>",
     dom = "<'row'<'col-sm-6'l><'col-sm-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-4'i><'col-sm-8'p>><'table-button paginate_button'B>",
-    buttons = c('excel', 'pdf', 'print'),
-    #info = TRUE,
-    #processing = TRUE,
+    buttons = c("excel", "pdf", "print"),
+    # info = TRUE,
+    # processing = TRUE,
     columnDefs = list(
-      list(targets = "_all",
-           className = 'dt-center')
+      list(
+        targets = "_all",
+        className = "dt-center"
+      )
     )
   )
 }
@@ -139,12 +141,14 @@ advanced_options <- function() {
     lengthChange = TRUE,
     dom = 'lfrti<"table-button"B>p',
     scrollX = "362px",
-    buttons = c('colvis', 'copy', 'csv'),
+    buttons = c("colvis", "copy", "csv"),
     info = TRUE,
     processing = TRUE,
     columnDefs = list(
-      list(targets = "_all",
-           className = 'dt-center')
+      list(
+        targets = "_all",
+        className = "dt-center"
+      )
     )
   )
 }
@@ -170,14 +174,10 @@ make_basic_table <- function(data,
                              options = basic_options(),
                              limit_width = "values",
                              ...) {
-
-
-
   if (limit_width == "both") {
     ## set JS
     options <- add_width_limit_values_JS(options, data)
     options <- add_with_limit_header_JS(options)
-
   } else if (limit_width == "values") {
     options <- add_width_limit_values_JS(options, data)
   } else if (limit_width == "headers") {
@@ -196,10 +196,10 @@ make_basic_table <- function(data,
     }
   }
 
-  if("searching" %in% names(options)) {
+  if ("searching" %in% names(options)) {
     # do nothing
   } else {
-    if(nrow(data) <= 15) {
+    if (nrow(data) <= 15) {
       options <- c(options, searching = FALSE)
     }
   }
@@ -207,20 +207,21 @@ make_basic_table <- function(data,
   if (nrow(data) > 15 & !("lengthChange" %in% options)) {
     options <- c(options, list(lengthMenu = list(
       c(10, -1),
-      c("10", "All"))))
-
+      c("10", "All")
+    )))
   } else {
-    options <-  c(options, lengthChange = FALSE)
+    options <- c(options, lengthChange = FALSE)
   }
 
   DT::datatable(data,
-                rownames = rownames,
-                extensions = extensions,
-                options = options,
-                ## Escape is always true for security reasons, see documentation
-                escape = TRUE,
-                style = "bootstrap",
-                ...)
+    rownames = rownames,
+    extensions = extensions,
+    options = options,
+    ## Escape is always true for security reasons, see documentation
+    escape = TRUE,
+    style = "bootstrap",
+    ...
+  )
 }
 
 
@@ -245,12 +246,10 @@ make_advanced_table <- function(
     options = advanced_options(),
     limit_width = "values",
     ...) {
-
   if (limit_width == "both") {
     ## set JS
     options <- add_width_limit_values_JS(options, data)
     options <- add_with_limit_header_JS(options)
-
   } else if (limit_width == "values") {
     options <- add_width_limit_values_JS(options, data)
   } else if (limit_width == "headers") {
@@ -263,8 +262,8 @@ make_advanced_table <- function(
   } else {
     options <- c(options, list(lengthMenu = list(
       c(10, 25, 50, 100, -1),
-      c("10", "25", "50", "100", "All"))))
-
+      c("10", "25", "50", "100", "All")
+    )))
   }
 
   if ("pageLength" %in% names(options)) {
@@ -276,14 +275,14 @@ make_advanced_table <- function(
   }
 
   DT::datatable(data,
-                rownames = rownames,
-                extensions = extensions,
-                filter = filter,
-                options = options,
-                ## Escape is always true for security reasons, see documentation
-                escape = TRUE,
-                ...)
-
+    rownames = rownames,
+    extensions = extensions,
+    filter = filter,
+    options = options,
+    ## Escape is always true for security reasons, see documentation
+    escape = TRUE,
+    ...
+  )
 }
 
 
@@ -325,4 +324,3 @@ make_advanced_table_html <- function(data, ...) {
     ...
   )
 }
-

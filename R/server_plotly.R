@@ -9,13 +9,15 @@
 #' @export
 ggplotly_with_legend <- function(plot, color, id) {
   plot <- plotly::ggplotly(plot) %>%
-    plotly::layout(legend =
-                     list(
-                       orientation = "h",
-                       xanchor = "center",
-                       x = 0.5,
-                       y = 1.20,
-                       title = list(text = display_name(color, id)))
+    plotly::layout(
+      legend =
+        list(
+          orientation = "h",
+          xanchor = "center",
+          x = 0.5,
+          y = 1.20,
+          title = list(text = display_name(color, id))
+        )
     )
 
   plot <- clean_pltly_legend(plot)
@@ -38,7 +40,6 @@ clean_pltly_legend <- function(pltly_obj, new_legend = c()) {
 
   ## Assigns a legend group from the list of possible entries
   assign_leg_grp <- function(legend_group, leg_nms) {
-
     leg_nms_rem <- leg_nms
 
     ## Assigns a .leg_name, if possible
@@ -47,7 +48,7 @@ clean_pltly_legend <- function(pltly_obj, new_legend = c()) {
       ## No more legend names to assign
       if (is.na(leg_options)) {
         leg_options
-      } else if(length(leg_nms_rem) == 0) {
+      } else if (length(leg_nms_rem) == 0) {
         leg_options
       } else {
         ## Transfer the first element of the remaining options
@@ -56,22 +57,18 @@ clean_pltly_legend <- function(pltly_obj, new_legend = c()) {
 
         leg_nm_new
       }
-
     }
 
     legend_group %>%
       purrr::map(~ parse_leg_nms(.))
-
   }
 
   ## Simplifies legend groups by removing brackets, position numbers and then de-duplicating
   simplify_leg_grps <- function(legendgroup_vec) {
-
     leg_grp_cln <-
       purrr::map_chr(legendgroup_vec, ~ stringr::str_replace_all(., c("^\\(" = "", ",\\d+\\)$" = "")))
 
-    purrr::modify_if(leg_grp_cln, duplicated(leg_grp_cln), ~ NA_character_)
-
+    purrr::modify_if(leg_grp_cln, duplicated(leg_grp_cln), ~NA_character_)
   }
 
   pltly_obj_data <-
@@ -82,7 +79,11 @@ clean_pltly_legend <- function(pltly_obj, new_legend = c()) {
   pltly_leg_grp <- pltly_obj_data %>%
     purrr::map(~ pluck(., "legendgroup")) %>%
     ## Elements where showlegend = FALSE have legendgroup = NULL
-    purrr::map_chr(~ if (is.null(.)) {NA_character_} else {.}) %>%
+    purrr::map_chr(~ if (is.null(.)) {
+      NA_character_
+    } else {
+      .
+    }) %>%
     simplify_leg_grps() %>%
     assign_leg_grp(new_legend)
 
@@ -97,5 +98,4 @@ clean_pltly_legend <- function(pltly_obj, new_legend = c()) {
   pltly_obj$x$data <- pltly_obj_data_new
 
   return(pltly_obj)
-
 }

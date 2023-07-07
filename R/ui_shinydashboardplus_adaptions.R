@@ -15,21 +15,25 @@ dropdownTabMenu <- function(..., type = c("messages", "notifications", "tasks"),
 
   if (is.null(icon)) {
     icon <- switch(type,
-                   messages = shiny::icon("envelope"),
-                   notifications = shiny::icon("warning"),
-                   tasks = shiny::icon("tasks")
+      messages = shiny::icon("envelope"),
+      notifications = shiny::icon("warning"),
+      tasks = shiny::icon("tasks")
     )
   }
 
   items <- c(list(...), .list)
   ## TODO This line gave warnings, is it needed?
-  #map(items, ~shinydashboardPlus::tagAssert(.x, type = "li"))
+  # map(items, ~shinydashboardPlus::tagAssert(.x, type = "li"))
 
   dropdownClass <- paste0("dropdown ", type, "-menu")
-  htmltools::tags$li(class = dropdownClass, htmltools::a(href = "#", class = "dropdown-toggle",
-                                                         `data-toggle` = "dropdown", icon, title), htmltools::tags$ul(class = "dropdown-menu",
-                                                                                                                      if (!is.null(header)) htmltools::tags$li(class = "header", header),
-                                                                                                                      htmltools::tags$li(htmltools::tags$ul(class = "menu", items))))
+  htmltools::tags$li(class = dropdownClass, htmltools::a(
+    href = "#", class = "dropdown-toggle",
+    `data-toggle` = "dropdown", icon, title
+  ), htmltools::tags$ul(
+    class = "dropdown-menu",
+    if (!is.null(header)) htmltools::tags$li(class = "header", header),
+    htmltools::tags$li(htmltools::tags$ul(class = "menu", items))
+  ))
 }
 
 
@@ -48,25 +52,26 @@ dropdownTabDirect <- function(type = c("messages", "notifications", "tasks"), ta
 
   if (is.null(icon)) {
     icon <- switch(type,
-                   messages = shiny::icon("envelope"),
-                   notifications = shiny::icon("warning"),
-                   tasks = shiny::icon("tasks")
+      messages = shiny::icon("envelope"),
+      notifications = shiny::icon("warning"),
+      tasks = shiny::icon("tasks")
     )
   }
 
-  tabSelect = TRUE
+  tabSelect <- TRUE
   dropdownClass <- paste0("dropdown ", type, "-menu")
 
-  htmltools::tags$li(class = dropdownClass,
-                     htmltools::a(
-                       href = "#",
-                       onclick = paste0("shinyjs.tabSelect('", tab_name, "')"),
-                       icon,
-                       title,
-                       `data-tab-name` = tab_name,
-                       class = "dropdown-toggle",
-                       `data-toggle` = "dropdown"
-                     )
+  htmltools::tags$li(
+    class = dropdownClass,
+    htmltools::a(
+      href = "#",
+      onclick = paste0("shinyjs.tabSelect('", tab_name, "')"),
+      icon,
+      title,
+      `data-tab-name` = tab_name,
+      class = "dropdown-toggle",
+      `data-toggle` = "dropdown"
+    )
   )
 }
 

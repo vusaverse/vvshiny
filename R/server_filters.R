@@ -15,7 +15,6 @@
 #' @return A prepared dataframe with applied filters and new columns.
 #' @export
 prep_df <- function(lFilters, lValues_for_naming, df, color_var, facet = "left", facet_var = rlang::sym("VIS_Groep"), facet_name_var = rlang::sym("VIS_Groep_naam")) {
-
   ## Collapses values from the naming list into a single string
   sName <- paste(keep_values(lValues_for_naming), collapse = " / ")
 
@@ -32,8 +31,9 @@ prep_df <- function(lFilters, lValues_for_naming, df, color_var, facet = "left",
     dplyr::mutate(
       !!facet_var := facet,
       !!facet_name_var := paste("VU",
-                                sName,
-                                sep = " - ")
+        sName,
+        sep = " - "
+      )
     ) %>%
     dplyr::mutate(!!rlang::sym(color_var) := as.factor(!!rlang::sym(color_var)))
 
@@ -52,7 +52,6 @@ prep_df <- function(lFilters, lValues_for_naming, df, color_var, facet = "left",
 #' @return A list of relevant values for the specified variable.
 #' @export
 keep_only_relevant_values <- function(lFilters, sVariable, dfFilters) {
-
   ## Verifies the input variables are set, if not stop execution
   shiny::req(lFilters)
 
@@ -68,7 +67,7 @@ keep_only_relevant_values <- function(lFilters, sVariable, dfFilters) {
     filter_with_lists(lFilter_elements) %>%
     dplyr::pull(!!rlang::sym(sVariable)) %>%
     purrr::set_names(.) %>%
-    purrr::map(~paste(.x, sVariable, sep = ";"))
+    purrr::map(~ paste(.x, sVariable, sep = ";"))
 
   return(lRelevant_values)
 }
@@ -84,7 +83,7 @@ keep_only_relevant_values <- function(lFilters, sVariable, dfFilters) {
 #' @return A list of values before the semicolon in the input
 #' @export
 keep_values <- function(input) {
-  lValues <- purrr::map(input, ~stringr::str_split(., ";")[[1]][1])
+  lValues <- purrr::map(input, ~ stringr::str_split(., ";")[[1]][1])
 
   return(lValues)
 }
@@ -99,7 +98,6 @@ keep_values <- function(input) {
 #' @return A list containing a column and its corresponding value for filtering
 #' @export
 transform_input <- function(input) {
-
   ## Splits the string and retrieves the second part as the column name
   sColumn <- stringr::str_split(input[1], ";")[[1]][2]
 
@@ -123,7 +121,6 @@ transform_input <- function(input) {
 #' @return A dataframe filtered based on the input filters
 #' @export
 filter_with_lists <- function(df, filters) {
-
   ## TODO about <<- see: https://adv-r.hadley.nz/environments.html?q=%3C%3C-#super-assignment--
   ## Applies each filter to the dataframe
   purrr::walk(filters, function(.x) df <<- df %>% dplyr::filter(!!rlang::sym(.x[[1]]) %in% .x[[2]]))
@@ -144,7 +141,6 @@ filter_with_lists <- function(df, filters) {
 #' @return A dataframe with a limited number of values for the Gantt chart
 #' @export
 limit_n_values_gantt <- function(df, split_var, n_values = 12) {
-
   split_var_placeholder <- NULL
 
   if (n_values >= dplyr::n_distinct(df[[split_var]])) {
@@ -158,22 +154,21 @@ limit_n_values_gantt <- function(df, split_var, n_values = 12) {
   n <- sum(df$n[(n_values):nrow(df)])
   flow_perc <- sum(df$flow_perc[n_values:nrow(df)])
   flow_end_perc <- 1
-  flow_start_perc = df$flow_start_perc[n_values]
+  flow_start_perc <- df$flow_start_perc[n_values]
 
 
   df_mutated <- df %>%
     dplyr::filter(!!rlang::sym(split_var) %in% values_to_keep) %>%
-    dplyr::bind_rows(data.frame(#!!rlang::sym(split_var) := "other",
+    dplyr::bind_rows(data.frame( # !!rlang::sym(split_var) := "other",
       split_var_placeholder = "Anders",
       n = n,
       flow_perc = flow_perc,
       flow_end_perc = flow_end_perc,
-      flow_start_perc = flow_start_perc) %>%
-        ## Update the dataframe before binding to avoid multiple columns with same names
-        dplyr::rename(!!rlang::sym(split_var) := split_var_placeholder)
+      flow_start_perc = flow_start_perc
     ) %>%
+      ## Update the dataframe before binding to avoid multiple columns with same names
+      dplyr::rename(!!rlang::sym(split_var) := split_var_placeholder)) %>%
     dplyr::arrange(flow_start_perc)
 
   return(df_mutated)
 }
-

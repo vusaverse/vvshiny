@@ -7,7 +7,6 @@
 #' @return A pickerInput object.
 #' @export
 pickerSankeyVar <- function(id, df_sankey, df_config_sankey, state = "left_var") {
-
   Categorie <- group_split <- NULL
 
   ## TODO Maybe integrate with other pickers
@@ -16,26 +15,30 @@ pickerSankeyVar <- function(id, df_sankey, df_config_sankey, state = "left_var")
   id_state <- shiny::NS(id, state)
 
   if (state == "left_var") {
-    text = "links"
+    text <- "links"
   } else if (state == "right_var") {
-    text = "rechts"
+    text <- "rechts"
   }
 
   lVariables <- df_config_sankey %>%
     dplyr::filter(!is.na(!!rlang::sym(state))) %>%
     dplyr::mutate(Categorie = factor(Categorie)) %>%
     group_split(Categorie) %>%
-    purrr::set_names(purrr::map_chr(., ~.x$Categorie[1] %>% as.character())) %>%
-    purrr::map(~ .x %>% dplyr::pull(target) %>% as.list()) %>%
+    purrr::set_names(purrr::map_chr(., ~ .x$Categorie[1] %>% as.character())) %>%
+    purrr::map(~ .x %>%
+      dplyr::pull(target) %>%
+      as.list()) %>%
     ## Iterate over elements
     purrr::map(
-      ~purrr::map(
+      ~ purrr::map(
         ## check if element is present and correctly formed
-        .x, ~purrr::keep(.x, present_and_correct(.x, df = df_sankey)) %>%
+        .x, ~ purrr::keep(.x, present_and_correct(.x, df = df_sankey)) %>%
           ## set the display name per element
           purrr::set_names(display_name(.x, id))
         ## Remove all empty elements
-      ) %>% purrr::compact() %>% unlist
+      ) %>%
+        purrr::compact() %>%
+        unlist()
     )
 
 
@@ -57,7 +60,6 @@ pickerSankeyVar <- function(id, df_sankey, df_config_sankey, state = "left_var")
 #' @return A pickerInput object.
 #' @export
 pickerSankeyValues <- function(id, filter_var, df_sankey, side) {
-
   inputId_base <- paste0("filter_", side)
   inputId <- shiny::NS(id, inputId_base)
 
@@ -82,7 +84,6 @@ pickerSankeyValues <- function(id, filter_var, df_sankey, side) {
 #' @return A pickerInput object.
 #' @export
 pickerGanttVar <- function(id, element, df_config_gantt, input_var_value = NULL) {
-
   input_var <- target_var <- Categorie <- NULL
 
   ## TODO Maybe integrate with other pickers
@@ -91,7 +92,10 @@ pickerGanttVar <- function(id, element, df_config_gantt, input_var_value = NULL)
   id_element <- shiny::NS(id, element)
 
   if (element == "target_var") {
-    basic_choices <- df_config_gantt %>% dplyr::filter(input_var == input_var_value) %>% dplyr::pull(target_var) %>% unique()
+    basic_choices <- df_config_gantt %>%
+      dplyr::filter(input_var == input_var_value) %>%
+      dplyr::pull(target_var) %>%
+      unique()
     label <- "doel variable"
   } else if (element == "input_var") {
     basic_choices <- df_config_gantt[[element]] %>% unique()
@@ -105,16 +109,15 @@ pickerGanttVar <- function(id, element, df_config_gantt, input_var_value = NULL)
     ## Split per category
     dplyr::mutate(Categorie = factor(Categorie)) %>%
     dplyr::group_split(Categorie) %>%
-    purrr::set_names(purrr::map_chr(., ~.x$Categorie[1] %>% as.character())) %>%
+    purrr::set_names(purrr::map_chr(., ~ .x$Categorie[1] %>% as.character())) %>%
     purrr::map(~ .x %>%
-                 #dplyr::filter(!!rlang::sym(element) %in% choices) %>%
-                 dplyr::pull(!!rlang::sym(element)) %>%
-                 as.list() %>%
-                 unique()
-    ) %>%
+      # dplyr::filter(!!rlang::sym(element) %in% choices) %>%
+      dplyr::pull(!!rlang::sym(element)) %>%
+      as.list() %>%
+      unique()) %>%
     ##  TODO present and correct could be added
     purrr::map(
-      ~purrr::set_names(.x, ~purrr::map_chr(.x, ~display_name(.x, id)))
+      ~ purrr::set_names(.x, ~ purrr::map_chr(.x, ~ display_name(.x, id)))
     )
 
   shinyWidgets::pickerInput(
@@ -134,7 +137,6 @@ pickerGanttVar <- function(id, element, df_config_gantt, input_var_value = NULL)
 #' @return A pickerInput object.
 #' @export
 pickerGanttValues <- function(id, filter_var, df_doorstroom_gantt) {
-
   inputId <- shiny::NS(id, "filter")
 
   shinyWidgets::pickerInput(

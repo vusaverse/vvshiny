@@ -7,7 +7,6 @@
 #' @return A string containing the user-friendly name for the column.
 #' @export
 display_name <- function(col_name, mapping_table) {
-
   if (col_name %in% names(mapping_table)) {
     col_name <- mapping_table[[col_name]]
   }
@@ -31,27 +30,29 @@ display_name <- function(col_name, mapping_table) {
 #' @return A DT::datatable object ready for displaying.
 #' @export
 prep_table <- function(y, df, df_summmarized, id, y_right = NULL, facet_var = rlang::sym("VIS_Groep"), facet_name_var = rlang::sym("VIS_Groep_naam"), ...) {
-
-
   ## Remove unneeded variables
   dfTabel <- df_summmarized %>%
-    dplyr::select(-!!facet_name_var,
-                  -!!facet_var)
+    dplyr::select(
+      -!!facet_name_var,
+      -!!facet_var
+    )
 
   ## Set user friendly names
-  names(dfTabel) = purrr::map_chr(names(dfTabel), ~display_name(.x, id))
+  names(dfTabel) <- purrr::map_chr(names(dfTabel), ~ display_name(.x, id))
 
   ## Get boolean vars in order to add formatting %
   if (is.logical(df[[y]])) {
     sBoolean_vars <- y
-  } else {sBoolean_vars = c()}
+  } else {
+    sBoolean_vars <- c()
+  }
 
   if (!is.null(y_right) && is.logical(df[[y_right]])) {
     sBoolean_vars <- c(sBoolean_vars, y_right)
   }
 
   sBoolean_vars <- sBoolean_vars %>%
-    purrr::map_chr(~display_name(.x, id))
+    purrr::map_chr(~ display_name(.x, id))
 
   ## Make datatable object
   dfTabel <- dfTabel %>%
@@ -61,7 +62,6 @@ prep_table <- function(y, df, df_summmarized, id, y_right = NULL, facet_var = rl
     DT::formatPercentage(sBoolean_vars, 2)
 
   return(dfTabel)
-
 }
 
 
@@ -73,9 +73,8 @@ prep_table <- function(y, df, df_summmarized, id, y_right = NULL, facet_var = rl
 #' @param ... Further arguments passed to the 'func' function.
 #' @return The result of the 'func' function with messages, warnings, and errors captured.
 #' @export
-quietly_run <- function(func,...) {
+quietly_run <- function(func, ...) {
   func <- func
   quietly_func <- purrr::quietly(func(...))
   quietly_func(...)
 }
-

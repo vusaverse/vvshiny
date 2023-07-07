@@ -7,7 +7,6 @@
 #' @return A pickerInput object.
 #' @export
 pickerVar <- function(id, element, df_categories, label = NULL) {
-
   Categorie <- NULL
 
   id_element <- shiny::NS(id, element)
@@ -21,17 +20,21 @@ pickerVar <- function(id, element, df_categories, label = NULL) {
     dplyr::mutate(Categorie = stats::reorder(factor(Categorie), !!rlang::sym(id_element))) %>%
     ## Get variables and put them in named list per category
     dplyr::group_split(Categorie) %>%
-    purrr::set_names(purrr::map_chr(., ~.x$Categorie[1] %>% as.character())) %>%
-    purrr::map(~ .x %>% dplyr::pull(Veldnaam) %>% as.list()) %>%
+    purrr::set_names(purrr::map_chr(., ~ .x$Categorie[1] %>% as.character())) %>%
+    purrr::map(~ .x %>%
+      dplyr::pull(Veldnaam) %>%
+      as.list()) %>%
     ## Iterate over elements
     purrr::map(
-      ~purrr::map(
+      ~ purrr::map(
         ## check if element is present and correctly formed
-        .x, ~purrr::keep(.x, present_and_correct(.x, element, df = df)) %>%
+        .x, ~ purrr::keep(.x, present_and_correct(.x, element, df = df)) %>%
           ## set the display name per element
           purrr::set_names(display_name(.x, id))
         ## Remove all empty elements
-      ) %>% purrr::compact() %>% unlist
+      ) %>%
+        purrr::compact() %>%
+        unlist()
     )
 
 
@@ -66,14 +69,11 @@ pickerVar <- function(id, element, df_categories, label = NULL) {
 #' @return A pickerInput object.
 #' @export
 pickerSplitVar <- function(id, variable = "INS_Splits_variabele", name = "color", label = "Kleur", df) {
-
-
-
   ## Create a named list with unique values as names and the combination of unique value and column name as value
-  choices <-  sort(unique(df[[variable]])) %>%
-    purrr::discard(~.x == "Alle")  %>%
-    purrr::map(~paste(.x, variable, sep = ";")) %>%
-    purrr::set_names(~map_chr(.x, ~display_name(.x, id)))
+  choices <- sort(unique(df[[variable]])) %>%
+    purrr::discard(~ .x == "Alle") %>%
+    purrr::map(~ paste(.x, variable, sep = ";")) %>%
+    purrr::set_names(~ map_chr(.x, ~ display_name(.x, id)))
 
   inputId <- paste(id, name, sep = "-")
 
@@ -84,7 +84,6 @@ pickerSplitVar <- function(id, variable = "INS_Splits_variabele", name = "color"
     options = list(
       `live-search` = TRUE
     )
-
   )
 }
 
@@ -100,8 +99,6 @@ pickerSplitVar <- function(id, variable = "INS_Splits_variabele", name = "color"
 #' @return A pickerInput object.
 #' @export
 pickerValues <- function(id, df, variable = "faculty", role = "left", selected = "All", multiple = TRUE) {
-
-
   ns <- shiny::NS(id)
 
   inputId <- ns(paste(variable, role, sep = "_"))
@@ -127,11 +124,11 @@ pickerValues <- function(id, df, variable = "faculty", role = "left", selected =
   label <- variable_name
 
   ## Create a named list with unique values as names
-  choices <-  sort(unique(df[[variable]])) %>%
+  choices <- sort(unique(df[[variable]])) %>%
     purrr::set_names(.) %>%
-    purrr::map(~paste(.x, variable, sep = ";"))
+    purrr::map(~ paste(.x, variable, sep = ";"))
 
-  #browser()
+  # browser()
 
   if (length(selected) == 1 && selected == "All") {
     selected <- choices
@@ -163,21 +160,19 @@ pickerValues <- function(id, df, variable = "faculty", role = "left", selected =
 #' @return A boolean indicating whether the column is present and correctly formed.
 #' @export
 present_and_correct <- function(column_name, element = NA, df) {
-
   present <- column_name %in% names(df)
 
   ## Controleer per type grafiek-element of de kolom voldoet
-  correct_form <- switch(
-    element,
+  correct_form <- switch(element,
     ##
     ## TODO: Tijdelijk zo gezet
-    #"x" = length(unique(df[[column_name]])) < 15,
+    # "x" = length(unique(df[[column_name]])) < 15,
     "x" = TRUE,
     "y" = typeof(df[[column_name]]) %in% c("logical", "double", "integer") & class(df[[column_name]]) != "Date",
     "y_links" = typeof(df[[column_name]]) %in% c("logical", "double", "integer") & class(df[[column_name]]) != "Date",
     "y_rechts" = typeof(df[[column_name]]) %in% c("logical", "double", "integer") & class(df[[column_name]]) != "Date",
     ## TODO: Kleur gaat nu via pickerFilter functie
-    #"color" = TRUE
+    # "color" = TRUE
     "color" = is.logical(df[[column_name]]) |
       is.integer(df[[column_name]]) & length(unique(df[[column_name]])) < 15 |
       is.character(df[[column_name]]) & length(unique(df[[column_name]])) < 15,
@@ -187,14 +182,12 @@ present_and_correct <- function(column_name, element = NA, df) {
   )
 
   ## Set correct form to TRUE when the element is not defined
-  if(is.null(correct_form)) {
+  if (is.null(correct_form)) {
     correct_form <- TRUE
   }
 
   ## Combine the two checks
-  result = present & correct_form
+  result <- present & correct_form
 
   return(result)
-
-
 }

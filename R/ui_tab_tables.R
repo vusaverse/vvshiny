@@ -23,14 +23,15 @@ tabPanelTables <- function(id, table_one = "tabel", table_two = "tabel_twee") {
 #' @return A tab panel with one table.
 #' @export
 tabTableOne <- function(id, table_one) {
-  shiny::tabPanel("Tabel",
-                  shiny::fluidRow(
-                    shiny::column(
-                      width = 12,
-                      align = "center",
-                      shinycssloaders::withSpinner(DT::DTOutput(shiny::NS(id, table_one)))
-                    )
-                  )
+  shiny::tabPanel(
+    "Tabel",
+    shiny::fluidRow(
+      shiny::column(
+        width = 12,
+        align = "center",
+        shinycssloaders::withSpinner(DT::DTOutput(shiny::NS(id, table_one)))
+      )
+    )
   )
 }
 
@@ -68,13 +69,14 @@ tabTableTwo <- function(id, table_one, table_two) {
 #' @return A bsPopover from the spsComps package with specified content and style.
 #' @export
 tabellenPopover <- function(..., tabblad) {
-
   ## TODO: Add text in 'www' and load it with includeHTML()
   ## TODO: Add to other tabs
 
-  tabblad_info <- dplyr::case_when(tabblad == "Table" ~ "Text table",
-                                   tabblad == "Composition percentages" ~ "Text composition %",
-                                   TRUE ~ "Test")
+  tabblad_info <- dplyr::case_when(
+    tabblad == "Table" ~ "Text table",
+    tabblad == "Composition percentages" ~ "Text composition %",
+    TRUE ~ "Test"
+  )
 
   tabblad_tekst <- paste0("<br>", tabblad_info, "</br>")
 
