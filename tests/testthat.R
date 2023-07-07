@@ -6,4 +6,4 @@
 # * https://r-pkgs.org/testing-design.html#sec-tests-files-overview
 # * https://testthat.r-lib.org/articles/special-files.html
 
-test_check("vvshiny")
+testthat::test_check("vvshiny")
