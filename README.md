@@ -1,3 +1,6 @@
+ <!-- badges: start -->
+  [![R-CMD-check](https://github.com/vusaverse/vvshiny/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/vusaverse/vvshiny/actions/workflows/R-CMD-check.yaml)
+  <!-- badges: end -->
 # README #
 
 This README would normally document whatever steps are necessary to get your application up and running.

@@ -4,3 +4,4 @@
 ^build_package.R
 ^config.yml$
 ^cran-comments\.md$
+^\.github$
