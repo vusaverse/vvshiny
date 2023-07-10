@@ -103,7 +103,6 @@ pickerValues <- function(id, df, variable = "faculty", role = "left", selected =
 
   inputId <- ns(paste(variable, role, sep = "_"))
 
-  ## TODO: variable and label name should be translated / mapped
   ## Convert user-friendly variable names to appropriate column names
   if (variable == "faculty") {
     variable <- "INS_Faculteit"
@@ -165,13 +164,11 @@ present_and_correct <- function(column_name, element = NA, df) {
   ## Controleer per type grafiek-element of de kolom voldoet
   correct_form <- switch(element,
     ##
-    ## TODO: Tijdelijk zo gezet
     # "x" = length(unique(df[[column_name]])) < 15,
     "x" = TRUE,
     "y" = typeof(df[[column_name]]) %in% c("logical", "double", "integer") & class(df[[column_name]]) != "Date",
     "y_links" = typeof(df[[column_name]]) %in% c("logical", "double", "integer") & class(df[[column_name]]) != "Date",
     "y_rechts" = typeof(df[[column_name]]) %in% c("logical", "double", "integer") & class(df[[column_name]]) != "Date",
-    ## TODO: Kleur gaat nu via pickerFilter functie
     # "color" = TRUE
     "color" = is.logical(df[[column_name]]) |
       is.integer(df[[column_name]]) & length(unique(df[[column_name]])) < 15 |

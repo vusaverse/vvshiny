@@ -48,7 +48,6 @@ prep_df_summ_aggr <- function(df, variables, y, color, total_n_var = rlang::sym(
   df_summarized <- df %>%
     dplyr::group_by(dplyr::across(dplyr::all_of(variables))) %>%
     dplyr::summarize(
-      ## TODO Code for calculation based on total quantities
       # !!rlang::sym(input$y_left) :=  round(
       #   sum(!!rlang::sym(input$y_left), na.rm = TRUE) / sum(!!total_n_var, na.rm = TRUE),
       #   3),

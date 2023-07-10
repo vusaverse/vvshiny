@@ -69,8 +69,6 @@ tabTableTwo <- function(id, table_one, table_two) {
 #' @return A bsPopover from the spsComps package with specified content and style.
 #' @export
 tabellenPopover <- function(..., tabblad) {
-  ## TODO: Add text in 'www' and load it with includeHTML()
-  ## TODO: Add to other tabs
 
   tabblad_info <- dplyr::case_when(
     tabblad == "Table" ~ "Text table",

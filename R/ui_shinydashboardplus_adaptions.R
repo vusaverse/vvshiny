@@ -10,7 +10,6 @@
 #' @export
 
 dropdownTabMenu <- function(..., type = c("messages", "notifications", "tasks"), title = NULL, icon = NULL, .list = NULL, header = NULL) {
-  ## TODO https://stackoverflow.com/questions/43806738/r-shiny-dashboard-custom-dropdown-menu-in-header
   type <- match.arg(type)
 
   if (is.null(icon)) {
@@ -22,7 +21,6 @@ dropdownTabMenu <- function(..., type = c("messages", "notifications", "tasks"),
   }
 
   items <- c(list(...), .list)
-  ## TODO This line gave warnings, is it needed?
   # map(items, ~shinydashboardPlus::tagAssert(.x, type = "li"))
 
   dropdownClass <- paste0("dropdown ", type, "-menu")
@@ -85,7 +83,6 @@ dropdownTabDirect <- function(type = c("messages", "notifications", "tasks"), ta
 #' @return An HTML list item.
 #' @export
 taskItemTab <- function(text, tab_name = NULL, href = NULL, tabSelect = FALSE) {
-  ##  TODO https://stackoverflow.com/questions/43806738/r-shiny-dashboard-custom-dropdown-menu-in-header
 
   if (is.null(href)) href <- "#"
 

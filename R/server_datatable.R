@@ -9,7 +9,6 @@
 header_callback <- function(data = data) {
   ## De r code heeft geen toegang tot het data-object uit de Javascript functie.
   ## Voeg dit daarom toe als optionele variabele
-  ## TODO: minLength instelbaar maken obv breedte bovenliggend element
   ## Zie comment bij: https://vustudentanalytics.atlassian.net/browse/VUSASOFT-3541
 
 
@@ -43,7 +42,6 @@ header_callback <- function(data = data) {
 #' @return A character vector containing the JavaScript code.
 #' @export
 value_callback <- function(data) {
-  ## TODO: lengte instelbaar maken obv breedte bovenliggend element
   ## Zie comment bij: https://vustudentanalytics.atlassian.net/browse/VUSASOFT-3541
 
   c(

@@ -36,7 +36,6 @@ ggplotly_with_legend <- function(plot, color, id) {
 #' @return The input plotly object with its legend cleaned.
 #' @export
 clean_pltly_legend <- function(pltly_obj, new_legend = c()) {
-  ## TODO Copy from: https://stackoverflow.com/questions/69289623/avoid-legend-duplication-in-plotly-conversion-from-ggplot-with-facet-wrap
 
   ## Assigns a legend group from the list of possible entries
   assign_leg_grp <- function(legend_group, leg_nms) {

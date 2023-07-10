@@ -1,5 +1,4 @@
 test_that("basic_plot function test", {
-  ## TODO Errors are often generated when print, so a print function as well
   print_basic_plot <- function(...) {
     print(basic_plot(...))
   }

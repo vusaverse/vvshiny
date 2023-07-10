@@ -121,7 +121,6 @@ transform_input <- function(input) {
 #' @return A dataframe filtered based on the input filters
 #' @export
 filter_with_lists <- function(df, filters) {
-  ## TODO about <<- see: https://adv-r.hadley.nz/environments.html?q=%3C%3C-#super-assignment--
   ## Applies each filter to the dataframe
   purrr::walk(filters, function(.x) df <<- df %>% dplyr::filter(!!rlang::sym(.x[[1]]) %in% .x[[2]]))
 

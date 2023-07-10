@@ -9,8 +9,6 @@
 pickerSankeyVar <- function(id, df_sankey, df_config_sankey, state = "left_var") {
   Categorie <- group_split <- NULL
 
-  ## TODO Maybe integrate with other pickers
-  ## TODO Expand
 
   id_state <- shiny::NS(id, state)
 
@@ -86,8 +84,6 @@ pickerSankeyValues <- function(id, filter_var, df_sankey, side) {
 pickerGanttVar <- function(id, element, df_config_gantt, input_var_value = NULL) {
   input_var <- target_var <- Categorie <- NULL
 
-  ## TODO Maybe integrate with other pickers
-  ## TODO Expand
 
   id_element <- shiny::NS(id, element)
 
@@ -115,7 +111,6 @@ pickerGanttVar <- function(id, element, df_config_gantt, input_var_value = NULL)
       dplyr::pull(!!rlang::sym(element)) %>%
       as.list() %>%
       unique()) %>%
-    ##  TODO present and correct could be added
     purrr::map(
       ~ purrr::set_names(.x, ~ purrr::map_chr(.x, ~ display_name(.x, id)))
     )

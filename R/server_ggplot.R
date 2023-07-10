@@ -374,7 +374,6 @@ gantt_plot <- function(df, x, xend, split_var, title, position_label_y) {
         color = !!rlang::sym(split_var)
       )
     ) +
-      ## TODO De grafiek blijft even groot dus bij veel rijen, kunnen de blokken te breed
       ## worden. Dit kan worden getest door de 'plots' pane groter / kleine te maken
       ggplot2::geom_segment(size = 6) +
       ggpubr::theme_pubr() +
@@ -384,7 +383,6 @@ gantt_plot <- function(df, x, xend, split_var, title, position_label_y) {
       ggplot2::labs(x = NULL, y = NULL) +
       ggplot2::scale_x_continuous(labels = scales::label_percent()) +
       ggplot2::ggtitle(title) +
-      ## TODO: Onderstaande regel wordt niet doorvertaald naar plotly.
       ## Daarom extra plotly layout code toegevoegd
       ggplot2::scale_y_discrete(position = position_label_y)
   ) %>%
