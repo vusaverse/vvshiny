@@ -190,7 +190,6 @@ grid_boxplots <- function(df, x, color, y, id, y_left = NULL, y_right = NULL, fa
     plot_list <- list()
     ## Create a plot for each unique value of x
     for (value_x in (unique_values_x)) {
-      cat("x: ", value_x, "\n")
 
       ## Filter only for this value of x
       df_part <- df %>% dplyr::filter(!!rlang::sym(x) == value_x)
