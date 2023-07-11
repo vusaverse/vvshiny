@@ -3,5 +3,5 @@ test_that("keep_values works as expected", {
   values = keep_values(input)
 
   # Check if the values are correctly extracted
-  expect_equal(sort(values), sort(c("A", "B", "C")))
+  expect_equal(values, list("A", "B", "C"))
 })
