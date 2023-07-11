@@ -15,3 +15,7 @@ A list of values before the semicolon in the input
 \description{
 This function extracts values before the semicolon from a ";"-separated string.
 }
+\examples{
+input = c("A;var1", "B;var1", "C;var1")
+values = keep_values(input)
+}

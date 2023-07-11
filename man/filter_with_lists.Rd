@@ -9,11 +9,23 @@ filter_with_lists(df, filters)
 \arguments{
 \item{df}{A dataframe to be filtered}
 
-\item{filters}{A list containing column names and their corresponding values for filtering}
+\item{filters}{A list of lists containing column names in the first element and a list their
+corresponding values for filtering in the second element}
 }
 \value{
 A dataframe filtered based on the input filters
 }
 \description{
 This function filters a dataframe using a list with column and one or more values.
+}
+\examples{
+df <- dplyr::tibble(
+  VIS_Groep = sample(c("Group1", "Group2", "Group3"), 100, replace = TRUE),
+  VIS_Groep_naam = sample(c("Name1", "Name2", "Name3"), 100, replace = TRUE),
+  var1 = sample(c("A", "B", "C"), 100, replace = TRUE),
+  var2 = rnorm(100),
+  color_var = sample(c("Red", "Blue", "Green"), 100, replace = TRUE)
+)
+filters = list(c("var1", c("A", "B")))
+dfFiltered <- filter_with_lists(df, filters)
 }

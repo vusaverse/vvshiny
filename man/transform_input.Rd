@@ -15,3 +15,7 @@ A list containing a column and its corresponding value for filtering
 \description{
 This function transforms a list of inputs into a column and value for filtering.
 }
+\examples{
+input = list("A;var1", "B;var1", "C;var1")
+filter_element = transform_input(input)
+}

@@ -13,19 +13,19 @@
 #' @param facet_var Variable used for facet grid ("VIS_Groep" by default).
 #' @param facet_name_var Variable used for facet grid naming ("VIS_Groep_naam" by default).
 #' @return A prepared dataframe with applied filters and new columns.
+#' @export
 #' @examples
-#' df <- tibble(
+#' df <- dplyr::tibble(
 #'   VIS_Groep = sample(c("Group1", "Group2", "Group3"), 100, replace = TRUE),
 #'   VIS_Groep_naam = sample(c("Name1", "Name2", "Name3"), 100, replace = TRUE),
 #'   var1 = sample(c("A", "B", "C"), 100, replace = TRUE),
 #'   var2 = rnorm(100),
 #'   color_var = sample(c("Red", "Blue", "Green"), 100, replace = TRUE)
 #' )
-#' lFilters = list(c("var1", c("A", "B")))
-#' lValues_for_naming = list("A", "B")
+#' lFilters <- list("A;var1")
+#' lValues_for_naming = list("Name1;VIS_Groep_naam", "Name2;VIS_Groep_naam")
 #' color_var = "color_var"
 #' dfPrepared <- prep_df(lFilters, lValues_for_naming, df, color_var, facet = "right")
-#' #' @export
 prep_df <- function(lFilters, lValues_for_naming, df, color_var, facet = "left", facet_var = rlang::sym("VIS_Groep"), facet_name_var = rlang::sym("VIS_Groep_naam")) {
   ## Collapses values from the naming list into a single string
   sName <- paste(keep_values(lValues_for_naming), collapse = " / ")
@@ -62,15 +62,20 @@ prep_df <- function(lFilters, lValues_for_naming, df, color_var, facet = "left",
 #' @param sVariable The variable for which relevant values are to be retrieved.
 #' @param dfFilters Dataframe with the possible filters and values for this dataset
 #' @return A list of relevant values for the specified variable.
+#' @export
 #' @examples
-#' dfFilters <- tibble(
+#' dfFilters <- dplyr::tibble(
 #'   var1 = sample(c("A", "B", "C"), 100, replace = TRUE),
 #'   var2 = sample(c("D", "E", "F"), 100, replace = TRUE),
 #'   var3 = sample(c("G", "H", "I"), 100, replace = TRUE)
 #' )
-#' filters = list(c("var2", c("D", "E")))
+#' filters <- list("D;var2")
 #' relevant_values <- keep_only_relevant_values(filters, "var1", dfFilters)
-#' @export
+#'
+#' # Check if the relevant values are only from the rows where var2 is "D" or "E"
+#' expected_values <- dfFilters$var1[dfFilters$var2 %in% c("D")] %>%
+#'   purrr::set_names(.) %>%
+#'   purrr::map(~paste0(.x, ";var1"))
 keep_only_relevant_values <- function(lFilters, sVariable, dfFilters) {
   ## Verifies the input variables are set, if not stop execution
   shiny::req(lFilters)
@@ -101,10 +106,10 @@ keep_only_relevant_values <- function(lFilters, sVariable, dfFilters) {
 #' @param input A character vector with ";"-separated strings
 #'
 #' @return A list of values before the semicolon in the input
+#' @export
 #' @examples
 #' input = c("A;var1", "B;var1", "C;var1")
 #' values = keep_values(input)
-#' @export
 keep_values <- function(input) {
 
   lValues <- purrr::map(input, ~ stringr::str_split(., ";")[[1]][1])
@@ -122,6 +127,9 @@ keep_values <- function(input) {
 #'
 #' @return A list containing a column and its corresponding value for filtering
 #' @export
+#' @examples
+#' input = list("A;var1", "B;var1", "C;var1")
+#' filter_element = transform_input(input)
 transform_input <- function(input) {
   ## Splits the string and retrieves the second part as the column name
   sColumn <- stringr::str_split(input[1], ";")[[1]][2]
@@ -145,9 +153,9 @@ transform_input <- function(input) {
 #' corresponding values for filtering in the second element
 #'
 #' @return A dataframe filtered based on the input filters
+#' @export
 #' @examples
-#' \dontrun{
-#' df <- tibble(
+#' df <- dplyr::tibble(
 #'   VIS_Groep = sample(c("Group1", "Group2", "Group3"), 100, replace = TRUE),
 #'   VIS_Groep_naam = sample(c("Name1", "Name2", "Name3"), 100, replace = TRUE),
 #'   var1 = sample(c("A", "B", "C"), 100, replace = TRUE),
@@ -156,8 +164,6 @@ transform_input <- function(input) {
 #' )
 #' filters = list(c("var1", c("A", "B")))
 #' dfFiltered <- filter_with_lists(df, filters)
-#' }
-#' @export
 filter_with_lists <- function(df, filters) {
   ## Applies each filter to the dataframe
     df <- purrr::reduce(filters, function(df, filter) {
