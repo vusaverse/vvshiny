@@ -9,11 +9,18 @@ quietly_run(func, ...)
 \arguments{
 \item{func}{The function to be run.}
 
-\item{...}{Further arguments passed to the 'func' function.}
+\item{...}{Optional further arguments passed to the 'func' function.}
 }
 \value{
-The result of the 'func' function with messages, warnings, and errors captured.
+The list result of the 'func' function with messages, warnings, and output captured.
 }
 \description{
 This function is a wrapper that allows a function to be run quietly without the need to create a separate quiet function.
+}
+\examples{
+warning_func_arugment <- function(info) {
+  warning(info)
+  return("Complete")
+}
+result <- quietly_run(warning_func_arugment, "Just checking")
 }

@@ -13,7 +13,12 @@
 #'
 #' @return A dataframe obtained by binding dfLeft and dfRight, with additional transformations applied
 #' @export
-#' @export
+#' @examples
+#'   df1 <- data.frame(x = 1:5, y = rnorm(5), VIS_Groep_naam = "One")
+#'   df2 <- data.frame(x = 6:10, y = rnorm(5), VIS_Groep_naam = "Two")
+#'   df_both <- bind_both(df1, df2, id = "test",
+#'                        y_left = "y", y_right = "y",
+#'                        facet_var = rlang::sym("x"))
 bind_both <- function(dfLeft, dfRight, id = "bench", y_left = NULL, y_right = NULL, facet_var = rlang::sym("VIS_Groep"), facet_name_var = rlang::sym("VIS_Groep_naam")) {
   y <- NULL
 
@@ -46,12 +51,28 @@ bind_both <- function(dfLeft, dfRight, id = "bench", y_left = NULL, y_right = NU
 #'
 #' @return A dataframe obtained by joining dfLeft_summ and dfRight_summ, with y_left relocated before y_right
 #' @export
+#' @examples
+#' df1 <- data.frame(
+#'   VIS_Groep = "a",
+#'   x = c("a", "b"),
+#'   y1 = 1:2
+#' )
+#' df2 <- data.frame(
+#'   VIS_Groep = "b",
+#'   x = c("a", "b"),
+#'   y2 = 3:4
+#' )
+#'
+#' df_both <- bind_both_table(df1, df2, "y1", "y2")
+#'
 bind_both_table <- function(dfLeft_summ, dfRight_summ, y_left, y_right) {
   ## Changes VIS_Groep to 'left' for the right summarized dataframe
-  dfRight_summ <- dfRight_summ %>% dplyr::mutate(VIS_Groep = "left")
+  dfRight_summ <- dfRight_summ %>% dplyr::mutate(VIS_Groep = dplyr::first(dfLeft_summ$VIS_Groep))
 
   ## Joins left and right summarized dataframes, and relocates y_left before y_right
-  dfBoth_table <- dplyr::inner_join(dfLeft_summ, dfRight_summ) %>%
+  dfBoth <- dplyr::inner_join(dfLeft_summ, dfRight_summ)
+
+  dfBoth_table <- dfBoth %>%
     dplyr::relocate(!!rlang::sym(y_left), .before = !!rlang::sym(y_right))
 
   return(dfBoth_table)

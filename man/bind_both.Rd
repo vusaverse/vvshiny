@@ -36,3 +36,10 @@ A dataframe obtained by binding dfLeft and dfRight, with additional transformati
 This function binds two dataframes row-wise and performs additional manipulations depending on the 'type'.
 The function also reorders the factor levels of the specified facet variable.
 }
+\examples{
+  df1 <- data.frame(x = 1:5, y = rnorm(5), VIS_Groep_naam = "One")
+  df2 <- data.frame(x = 6:10, y = rnorm(5), VIS_Groep_naam = "Two")
+  df_both <- bind_both(df1, df2, id = "test",
+                       y_left = "y", y_right = "y",
+                       facet_var = rlang::sym("x"))
+}

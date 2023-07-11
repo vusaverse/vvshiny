@@ -22,3 +22,18 @@ A dataframe obtained by joining dfLeft_summ and dfRight_summ, with y_left reloca
 This function joins two summarized dataframes and relocates y_left before y_right.
 The function also sets the VIS_Groep value to 'left' for the right dataframe.
 }
+\examples{
+df1 <- data.frame(
+  VIS_Groep = "a",
+  x = c("a", "b"),
+  y1 = 1:2
+)
+df2 <- data.frame(
+  VIS_Groep = "b",
+  x = c("a", "b"),
+  y2 = 3:4
+)
+
+df_both <- bind_both_table(df1, df2, "y1", "y2")
+
+}

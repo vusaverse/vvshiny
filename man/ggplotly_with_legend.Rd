@@ -4,14 +4,15 @@
 \alias{ggplotly_with_legend}
 \title{Make ggplotly and add legend with color as title}
 \usage{
-ggplotly_with_legend(plot, color, id)
+ggplotly_with_legend(plot, color, mapping_table)
 }
 \arguments{
 \item{plot}{A ggplot object.}
 
 \item{color}{A string specifying the column name to be used as the color variable.}
 
-\item{id}{A string specifying the ID associated with the data.}
+\item{mapping_table}{A named list with as name the original colum name and as value the display
+name}
 }
 \value{
 A plotly object with a formatted legend.

@@ -4,10 +4,11 @@
 #'
 #' @param plot A ggplot object.
 #' @param color A string specifying the column name to be used as the color variable.
-#' @param id A string specifying the ID associated with the data.
+#' @param mapping_table A named list with as name the original colum name and as value the display
+#' name
 #' @return A plotly object with a formatted legend.
 #' @export
-ggplotly_with_legend <- function(plot, color, id) {
+ggplotly_with_legend <- function(plot, color, mapping_table) {
   plot <- plotly::ggplotly(plot) %>%
     plotly::layout(
       legend =
@@ -16,7 +17,7 @@ ggplotly_with_legend <- function(plot, color, id) {
           xanchor = "center",
           x = 0.5,
           y = 1.20,
-          title = list(text = display_name(color, id))
+          title = list(text = display_name(color, mapping_table))
         )
     )
 
@@ -34,7 +35,6 @@ ggplotly_with_legend <- function(plot, color, id) {
 #' @param pltly_obj A plotly object with a legend to be cleaned.
 #' @param new_legend An optional vector of strings specifying new legend entries. Default is an empty vector.
 #' @return The input plotly object with its legend cleaned.
-#' @export
 clean_pltly_legend <- function(pltly_obj, new_legend = c()) {
 
   ## Assigns a legend group from the list of possible entries
@@ -76,7 +76,7 @@ clean_pltly_legend <- function(pltly_obj, new_legend = c()) {
   ## pltly_leg_grp is a character vector where each element represents a legend group. Element is NA
   ## if legend group not required or doesn't exist
   pltly_leg_grp <- pltly_obj_data %>%
-    purrr::map(~ pluck(., "legendgroup")) %>%
+    purrr::map(~ purrr::pluck(., "legendgroup")) %>%
     ## Elements where showlegend = FALSE have legendgroup = NULL
     purrr::map_chr(~ if (is.null(.)) {
       NA_character_
