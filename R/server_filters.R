@@ -93,6 +93,27 @@ keep_only_relevant_values <- function(lFilters, sVariable, dfFilters) {
 }
 
 
+
+#' Keep values
+#'
+#' This function extracts values before the semicolon from a ";"-separated string.
+#'
+#' @param input A character vector with ";"-separated strings
+#'
+#' @return A list of values before the semicolon in the input
+#' @examples
+#' input = c("A;var1", "B;var1", "C;var1")
+#' values = keep_values(input)
+#' @export
+keep_values <- function(input) {
+
+  lValues <- purrr::map(input, ~ stringr::str_split(., ";")[[1]][1])
+
+
+  return(lValues)
+}
+
+
 #' Transform input
 #'
 #' This function transforms a list of inputs into a column and value for filtering.
@@ -100,16 +121,13 @@ keep_only_relevant_values <- function(lFilters, sVariable, dfFilters) {
 #' @param input A list of inputs to be transformed
 #'
 #' @return A list containing a column and its corresponding value for filtering
-#' @examples
-#' input = c("A;var1", "B;var1", "C;var1")
-#' filter_element = transform_input(input)
 #' @export
 transform_input <- function(input) {
   ## Splits the string and retrieves the second part as the column name
   sColumn <- stringr::str_split(input[1], ";")[[1]][2]
 
   ## Retrieves the filter values
-  lValues <- purrr::map(input, ~ stringr::str_split(., ";")[[1]][1])
+  lValues <- keep_values(input)
 
   ## Combines column and values into a filter element
   lFilter_element <- list(sColumn, lValues)
