@@ -33,7 +33,11 @@ Imports:
   scales,
   spsComps,
   stats,
-  shinycssloaders
+  shinycssloaders,
+  shinydashboard,
+  shinydashboardPlus,
+  waiter,
+  tidyr
 Suggests: 
   knitr,
   rmarkdown,

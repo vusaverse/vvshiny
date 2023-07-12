@@ -15,9 +15,6 @@ pickerGanttVar(id, element, df_config_gantt, input_var_value = NULL)
 
 \item{input_var_value}{A variable value from the input. Default is NULL.}
 }
-\value{
-A pickerInput object.
-}
 \description{
 Function to pick a variable to show values in a Gantt chart.
 }
