@@ -5,7 +5,6 @@
 #'
 #' @param data An optional data.frame. Default is 'data' in the global environment.
 #' @return A character vector containing the JavaScript code.
-#' @export
 header_callback <- function(data = data) {
   ## De r code heeft geen toegang tot het data-object uit de Javascript functie.
   ## Voeg dit daarom toe als optionele variabele
@@ -40,7 +39,6 @@ header_callback <- function(data = data) {
 #'
 #' @param data A data.frame.
 #' @return A character vector containing the JavaScript code.
-#' @export
 value_callback <- function(data) {
   ## Zie comment bij: https://vustudentanalytics.atlassian.net/browse/VUSASOFT-3541
 
@@ -60,7 +58,6 @@ value_callback <- function(data) {
 #' @param options A list of datatable options.
 #' @param data A data.frame.
 #' @return The updated list of datatable options.
-#' @export
 add_with_limit_header_JS <- function(options, data) {
   headerJS <- list(headerCallback = htmlwidgets::JS(header_callback(data)))
 
@@ -78,7 +75,6 @@ add_with_limit_header_JS <- function(options, data) {
 #' @param options A list of datatable options.
 #' @param data A data.frame.
 #' @return The updated list of datatable options.
-#' @export
 add_width_limit_values_JS <- function(options, data) {
   valueJS <- list(
     targets = "_all",
@@ -102,7 +98,6 @@ add_width_limit_values_JS <- function(options, data) {
 #' This function returns a list of basic datatable options.
 #'
 #' @return A list of datatable options.
-#' @export
 basic_options <- function() {
   list(
     language = list(url = "//cdn.datatables.net/plug-ins/1.10.11/i18n/Dutch.json"),
@@ -129,7 +124,6 @@ basic_options <- function() {
 #' This function returns a list of advanced datatable options.
 #'
 #' @return A list of datatable options.
-#' @export
 advanced_options <- function() {
   list(
     pagingType = "full",
@@ -164,8 +158,6 @@ advanced_options <- function() {
 #' @param limit_width A character string indicating how to limit column width.
 #' @param ... Additional arguments passed to DT::datatable().
 #' @return A datatable object.
-#' @export
-
 make_basic_table <- function(data,
                              rownames = FALSE,
                              extensions = c("Buttons"),
@@ -235,7 +227,6 @@ make_basic_table <- function(data,
 #' @param limit_width A logical value indicating whether to limit column width.
 #' @param ... Additional arguments passed to DT::datatable().
 #' @return A datatable object.
-#' @export
 make_advanced_table <- function(
     data,
     rownames = FALSE,
@@ -291,7 +282,6 @@ make_advanced_table <- function(
 #' @param data The data.frame to be displayed.
 #' @param ... Additional arguments passed to 'make_basic_table()'.
 #' @return A datatable object.
-#' @export
 make_basic_table_html <- function(data, ...) {
   make_basic_table(
     data,
@@ -311,7 +301,6 @@ make_basic_table_html <- function(data, ...) {
 #' @param data The data.frame to be displayed.
 #' @param ... Additional arguments passed to 'make_advanced_table()'.
 #' @return A datatable object.
-#' @export
 make_advanced_table_html <- function(data, ...) {
   make_advanced_table(
     data,
@@ -321,4 +310,53 @@ make_advanced_table_html <- function(data, ...) {
     limit_width = NULL,
     ...
   )
+}
+
+
+#' Prepare a data table for displaying
+#'
+#' This function prepares a data table for displaying by providing user-friendly names, removing unneeded variables, and formatting percentages.
+#'
+#' @param y A string specifying the column name to be used as the y-axis variable.
+#' @param df A data frame containing the raw data.
+#' @param df_summmarized A data frame containing the summarized data.
+#' @param id A string specifying the ID associated with the data.
+#' @param y_right An optional string specifying the column name to be used as the second y-axis variable. Default is NULL.
+#' @param facet_var A symbol specifying the column to be used for faceting. Default is 'VIS_Groep'.
+#' @param facet_name_var A symbol specifying the column to be used for faceting names. Default is 'VIS_Groep_naam'.
+#' @param ... Further arguments passed on to the 'make_basic_table' function.
+#' @return A DT::datatable object ready for displaying.
+prep_table <- function(y, df, df_summmarized, id, y_right = NULL, facet_var = rlang::sym("VIS_Groep"), facet_name_var = rlang::sym("VIS_Groep_naam"), ...) {
+  ## Remove unneeded variables
+  dfTabel <- df_summmarized %>%
+    dplyr::select(
+      -!!facet_name_var,
+      -!!facet_var
+    )
+
+  ## Set user friendly names
+  names(dfTabel) <- purrr::map_chr(names(dfTabel), ~ display_name(.x, id))
+
+  ## Get boolean vars in order to add formatting %
+  if (is.logical(df[[y]])) {
+    sBoolean_vars <- y
+  } else {
+    sBoolean_vars <- c()
+  }
+
+  if (!is.null(y_right) && is.logical(df[[y_right]])) {
+    sBoolean_vars <- c(sBoolean_vars, y_right)
+  }
+
+  sBoolean_vars <- sBoolean_vars %>%
+    purrr::map_chr(~ display_name(.x, id))
+
+  ## Make datatable object
+  dfTabel <- dfTabel %>%
+    make_basic_table(
+      caption = dplyr::first(df_summmarized[[facet_name_var]]), ...
+    ) %>%
+    DT::formatPercentage(sBoolean_vars, 2)
+
+  return(dfTabel)
 }
