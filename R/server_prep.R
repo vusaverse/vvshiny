@@ -10,6 +10,13 @@
 #'
 #' @return A summarized dataframe
 #' @export
+#' @examples
+#' df <- data.frame(
+#' id = c(1, 1, 2, 2),
+#' group = c("A", "A", "B", "B"),
+#' value = c(2, 4, 6, 8)
+#' )
+#' df_summ <- prep_df_summ(df, c("id", "group"), "value")
 prep_df_summ <- function(df, variables, y) {
   ## Groups by provided variables, summarizes the y-variable and counts number of observations
   ## per group
@@ -43,8 +50,16 @@ prep_df_summ <- function(df, variables, y) {
 #'
 #' @return A summarized and aggregated dataframe arranged by color
 #' @export
+#' @examples
+#' df <- data.frame( split_var_value = c("male", "male", "female", "female", "dutch", "dutch",
+#' "EER", "EER", "Outside EER", "Outside EER"), other_var = c("Early", "Late", "Early", "Late",
+#' "Early", "Late", "Early", "Late", "Early", "Late"), value = c(2, 4, 6, 8, 10, 2, 4, 6, 8, 10),
+#' total = c(10, 10, 20, 20, 30, 30, 40, 40, 50, 50), split_var = c("gender", "gender", "gender",
+#' "gender", "background", "background", "background", "background", "background", "background") )
 prep_df_summ_aggr <- function(df, variables, y, color, total_n_var = rlang::sym("INS_Aantal_eerstejaars"), aggr_split_value_var = rlang::sym("INS_Splits_variabele_waarde")) {
   ## Groups by provided variables, calculates weighted mean for y-variable, sums up total count per group and arranges by color
+  variables <- unique(c(variables, rlang::as_name(aggr_split_value_var)))
+
   df_summarized <- df %>%
     dplyr::group_by(dplyr::across(dplyr::all_of(variables))) %>%
     dplyr::summarize(

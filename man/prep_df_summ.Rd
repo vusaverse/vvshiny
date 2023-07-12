@@ -21,3 +21,11 @@ This function prepares a summarized dataframe based on provided variables and a 
 The function groups the dataframe by the provided variables, summarizes the y-variable,
 and counts the number of observations per group.
 }
+\examples{
+df <- data.frame(
+id = c(1, 1, 2, 2),
+group = c("A", "A", "B", "B"),
+value = c(2, 4, 6, 8)
+)
+df_summ <- prep_df_summ(df, c("id", "group"), "value")
+}
