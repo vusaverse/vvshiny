@@ -7,8 +7,6 @@
 #' @param .list A list of items to add to the dropdown.
 #' @param header The header for the dropdown.
 #' @return A dropdown menu in the form of an HTML list.
-#' @export
-
 dropdownTabMenu <- function(..., type = c("messages", "notifications", "tasks"), title = NULL, icon = NULL, .list = NULL, header = NULL) {
   type <- match.arg(type)
 
@@ -21,7 +19,7 @@ dropdownTabMenu <- function(..., type = c("messages", "notifications", "tasks"),
   }
 
   items <- c(list(...), .list)
-  # map(items, ~shinydashboardPlus::tagAssert(.x, type = "li"))
+   #lapply(items, shinydashboardPlus::tagAssert, type = "li")
 
   dropdownClass <- paste0("dropdown ", type, "-menu")
   htmltools::tags$li(class = dropdownClass, htmltools::a(
@@ -44,7 +42,6 @@ dropdownTabMenu <- function(..., type = c("messages", "notifications", "tasks"),
 #' @param .list A list of items to add to the dropdown.
 #' @param header The header for the dropdown.
 #' @return A dropdown menu in the form of an HTML list, where clicking the dropdown directs to a specific tab.
-#' @export
 dropdownTabDirect <- function(type = c("messages", "notifications", "tasks"), tab_name, title, icon = NULL, .list = NULL, header = NULL) {
   type <- match.arg(type)
 
@@ -81,7 +78,6 @@ dropdownTabDirect <- function(type = c("messages", "notifications", "tasks"), ta
 #' @param href The href link for the item. If NULL, it defaults to "#".
 #' @param tabSelect A boolean indicating whether to select the tab. Default is FALSE.
 #' @return An HTML list item.
-#' @export
 taskItemTab <- function(text, tab_name = NULL, href = NULL, tabSelect = FALSE) {
 
   if (is.null(href)) href <- "#"

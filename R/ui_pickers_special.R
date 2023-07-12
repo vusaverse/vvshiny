@@ -5,7 +5,6 @@
 #' @param df_config_sankey A data frame containing the Sankey configuration.
 #' @param state A string representing the state of the variable. Default is "left_var".
 #' @return A pickerInput object.
-#' @export
 pickerSankeyVar <- function(id, df_sankey, df_config_sankey, state = "left_var") {
   Categorie <- group_split <- NULL
 
@@ -56,7 +55,6 @@ pickerSankeyVar <- function(id, df_sankey, df_config_sankey, state = "left_var")
 #' @param df_sankey A data frame containing the Sankey diagram data.
 #' @param side A string representing the side of the Sankey diagram.
 #' @return A pickerInput object.
-#' @export
 pickerSankeyValues <- function(id, filter_var, df_sankey, side) {
   inputId_base <- paste0("filter_", side)
   inputId <- shiny::NS(id, inputId_base)
@@ -79,8 +77,6 @@ pickerSankeyValues <- function(id, filter_var, df_sankey, side) {
 #' @param element A string representing the element.
 #' @param df_config_gantt A data frame containing the Gantt configuration.
 #' @param input_var_value A variable value from the input. Default is NULL.
-#' @return A pickerInput object.
-#' @export
 pickerGanttVar <- function(id, element, df_config_gantt, input_var_value = NULL) {
   input_var <- target_var <- Categorie <- NULL
 
@@ -130,7 +126,6 @@ pickerGanttVar <- function(id, element, df_config_gantt, input_var_value = NULL)
 #' @param filter_var A string representing the variable to filter.
 #' @param df_doorstroom_gantt A data frame containing the Gantt chart data.
 #' @return A pickerInput object.
-#' @export
 pickerGanttValues <- function(id, filter_var, df_doorstroom_gantt) {
   inputId <- shiny::NS(id, "filter")
 

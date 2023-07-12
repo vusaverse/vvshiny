@@ -4,7 +4,6 @@
 #' @param table_one A string representing the first table. Default is "tabel".
 #' @param table_two A string representing the second table. Default is "tabel_twee".
 #' @return A tab panel with one or two tables based on the 'id' parameter.
-#' @export
 tabPanelTables <- function(id, table_one = "tabel", table_two = "tabel_twee") {
   if (stringr::str_detect(id, "bench")) {
     ## Call function to create a tab panel with two tables
@@ -21,7 +20,6 @@ tabPanelTables <- function(id, table_one = "tabel", table_two = "tabel_twee") {
 #' @param id A string representing the id.
 #' @param table_one A string representing the table.
 #' @return A tab panel with one table.
-#' @export
 tabTableOne <- function(id, table_one) {
   shiny::tabPanel(
     "Tabel",
@@ -42,7 +40,6 @@ tabTableOne <- function(id, table_one) {
 #' @param table_one A string representing the first table.
 #' @param table_two A string representing the second table.
 #' @return A tab panel with two tables.
-#' @export
 tabTableTwo <- function(id, table_one, table_two) {
   shiny::tabPanel(
     "Tabel",
@@ -67,7 +64,6 @@ tabTableTwo <- function(id, table_one, table_two) {
 #' @param ... Arguments passed to other methods.
 #' @param tabblad A string representing the tab.
 #' @return A bsPopover from the spsComps package with specified content and style.
-#' @export
 tabellenPopover <- function(..., tabblad) {
 
   tabblad_info <- dplyr::case_when(

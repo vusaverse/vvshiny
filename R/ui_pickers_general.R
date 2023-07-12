@@ -5,7 +5,6 @@
 #' @param df_categories A dataframe with metadata about the available categories per picker element
 #' @param label A string representing the label of the input. Default is NULL.
 #' @return A pickerInput object.
-#' @export
 pickerVar <- function(id, element, df_categories, label = NULL) {
   Categorie <- NULL
 
@@ -67,7 +66,6 @@ pickerVar <- function(id, element, df_categories, label = NULL) {
 #' @param label A string representing the label of the input. Default is "Kleur".
 #' @param df A data frame containing the data. Default is dfCombi_geaggregeerd.
 #' @return A pickerInput object.
-#' @export
 pickerSplitVar <- function(id, variable = "INS_Splits_variabele", name = "color", label = "Kleur", df) {
   ## Create a named list with unique values as names and the combination of unique value and column name as value
   choices <- sort(unique(df[[variable]])) %>%
@@ -97,7 +95,6 @@ pickerSplitVar <- function(id, variable = "INS_Splits_variabele", name = "color"
 #' @param selected The selected value. Default is "All".
 #' @param multiple A boolean indicating whether multiple selections are allowed. Default is TRUE.
 #' @return A pickerInput object.
-#' @export
 pickerValues <- function(id, df, variable = "faculty", role = "left", selected = "All", multiple = TRUE) {
   ns <- shiny::NS(id)
 
@@ -127,7 +124,6 @@ pickerValues <- function(id, df, variable = "faculty", role = "left", selected =
     purrr::set_names(.) %>%
     purrr::map(~ paste(.x, variable, sep = ";"))
 
-  # browser()
 
   if (length(selected) == 1 && selected == "All") {
     selected <- choices
@@ -157,7 +153,6 @@ pickerValues <- function(id, df, variable = "faculty", role = "left", selected =
 #' @param element A string representing the element. Default is NA.
 #' @param df A data frame for which to check the column. Default is dfCombi_geaggregeerd.
 #' @return A boolean indicating whether the column is present and correctly formed.
-#' @export
 present_and_correct <- function(column_name, element = NA, df) {
   present <- column_name %in% names(df)
 

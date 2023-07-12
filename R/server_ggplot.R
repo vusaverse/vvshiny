@@ -14,7 +14,6 @@
 #' @param facet_name_var The name of the variable used for facet wrapping.
 #'
 #' @return A ggplot object.
-#' @export
 wrapped_chart <- function(df, x, y, color, id = "bench", df_original, y_left = NULL, y_right = NULL, facet_var = rlang::sym("VIS_Groep"), facet_name_var = rlang::sym("VIS_Groep_naam")) {
   ## Depending on the type of plot, set facet wrap and labels settings
   if (stringr::str_detect(id, "bench")) {
@@ -71,10 +70,6 @@ wrapped_chart <- function(df, x, y, color, id = "bench", df_original, y_left = N
     plot <- plot + ggplot2::geom_bar(position = "dodge", stat = "identity")
   }
 
-
-
-
-
   ## Add legend using ggplotly
   plot <- ggplotly_with_legend(plot, color, id)
 
@@ -94,7 +89,6 @@ wrapped_chart <- function(df, x, y, color, id = "bench", df_original, y_left = N
 #' @param wrap Logical indicating whether to use facet wrapping.
 #'
 #' @return A ggplot object.
-#' @export
 stacked_composition_bar_chart <- function(df, x, color, id, facet_name_var = rlang::sym("VIS_Groep_naam"), percentage = FALSE, wrap = FALSE) {
   Aantal <- NULL
 
@@ -158,7 +152,6 @@ stacked_composition_bar_chart <- function(df, x, color, id, facet_name_var = rla
 #' @param facet_name_var The name of the variable used for facet wrapping.
 #'
 #' @return A ggplot object.
-#' @export
 grid_boxplots <- function(df, x, color, y, id, y_left = NULL, y_right = NULL, facet_var = rlang::sym("VIS_Groep"), facet_name_var = rlang::sym("VIS_Groep_naam")) {
   df <- df %>%
     dplyr::arrange(!!rlang::sym(color), !!rlang::sym(x)) %>%
@@ -258,7 +251,6 @@ grid_boxplots <- function(df, x, color, y, id, y_left = NULL, y_right = NULL, fa
 #' @param facet_name_var The name of the variable used for facet wrapping.
 #'
 #' @return A list of ggplot objects.
-#' @export
 grid_histograms <- function(df, x, color, y, id, y_left = NULL, y_right = NULL, facet_var = rlang::sym("VIS_Groep"), facet_name_var = rlang::sym("VIS_Groep_naam")) {
   width <- density <- NULL
 
@@ -358,7 +350,6 @@ grid_histograms <- function(df, x, color, y, id, y_left = NULL, y_right = NULL, 
 #' @param title A string specifying the title of the plot.
 #' @param position_label_y A string specifying the position of y-axis labels.
 #' @return A Gantt plot.
-#' @export
 gantt_plot <- function(df, x, xend, split_var, title, position_label_y) {
   plotly::ggplotly(
     ggplot2::ggplot(
@@ -414,7 +405,6 @@ gantt_plot <- function(df, x, xend, split_var, title, position_label_y) {
 #' @param title_size Numeric value specifying the size of the title.
 #' @param title_font A string specifying the font of the title.
 #' @return A Sankey plot.
-#' @export
 sankey_plot <- function(df, left_var, right_var, xlab_setting, ylab_setting, name_left, name_right, title, title_size = 20, title_font = "verdana") {
   n <- stratum <- NULL
 
@@ -445,7 +435,6 @@ sankey_plot <- function(df, left_var, right_var, xlab_setting, ylab_setting, nam
 #' Basic ggplot settings are put in a list and returned
 #'
 #' @return A list with ggplot settings
-#' @export
 ggplot_basic_settings <- function() {
   settings <- list(ggplot2::scale_fill_brewer(palette = "Pastel1"), ggplot2::scale_colour_brewer(palette = "Pastel1"))
   return(settings)
@@ -467,7 +456,6 @@ ggplot_basic_settings <- function() {
 #' @param legend_position A string specifying the position of the legend.
 #' @param scale_y Optional ggplot2 scale function to modify the y axis.
 #' @return A ggplot plot.
-#' @export
 basic_plot <- function(df, x, y, color, xlab_setting, ylab_setting, ggplot_settings = ggplot_basic_settings(), legend_position = "none", scale_y = NULL) {
   plot <- ggplot2::ggplot(
     df,
