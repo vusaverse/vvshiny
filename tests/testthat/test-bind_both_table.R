@@ -13,7 +13,7 @@ test_that("bind_both_table joins and relocates columns correctly", {
     y2 = 3:4
   )
 
-  df_both <- bind_both_table(df1, df2, "y1", "y2")
+  df_both <- suppressMessages(bind_both_table(df1, df2, "y1", "y2"))
 
   #df1$VIS_Groep <- "left"
 
