@@ -107,6 +107,15 @@ The function also reorders the factor levels of the specified facet variable.</p
 <p>A dataframe obtained by binding dfLeft and dfRight, with additional transformations applied</p>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span>  <span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>, VIS_Groep_naam <span class="op">=</span> <span class="st">"One"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">6</span><span class="op">:</span><span class="fl">10</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>, VIS_Groep_naam <span class="op">=</span> <span class="st">"Two"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">df_both</span> <span class="op">&lt;-</span> <span class="fu">bind_both</span><span class="op">(</span><span class="va">df1</span>, <span class="va">df2</span>, id <span class="op">=</span> <span class="st">"test"</span>,</span></span>
+<span class="r-in"><span>                       y_left <span class="op">=</span> <span class="st">"y"</span>, y_right <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>                       facet_var <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/sym.html" class="external-link">sym</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span></span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
