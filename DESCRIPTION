@@ -13,8 +13,8 @@ Authors@R:
            role = "ctb"
            ),
     person(given = "VU Analytics",
-           role = "c(cph, cre")
-           )
+           role = c("cph")
+           ))
 Description: Helper and Wrapper functions for making shinydasboards more easily. Functions are made modular so choices can be made on more than one level.
 License: MIT + file LICENSE
 Encoding: UTF-8

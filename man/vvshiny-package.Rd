@@ -9,7 +9,13 @@
 Helper and Wrapper functions for making shinydasboards more easily. Functions are made modular so choices can be made on more than one level.
 }
 \author{
-\strong{Maintainer}: Corneel Den Hartogh \email{c.f.den.hartogh@vu.nl} (\href{https://orcid.org/0000-0001-8347-7944}{ORCID}) [copyright holder]
+\strong{Maintainer}: Corneel Den Hartogh \email{c.f.den.hartogh@vu.nl} (\href{https://orcid.org/0000-0001-8347-7944}{ORCID})
+
+Other contributors:
+\itemize{
+  \item Tomer Iwan [contributor]
+  \item VU Analytics [copyright holder]
+}
 
 }
 \keyword{internal}
