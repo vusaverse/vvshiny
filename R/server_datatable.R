@@ -313,22 +313,57 @@ make_advanced_table_html <- function(data, ...) {
 }
 
 
-## Prepare a data table for displaying
-##
-## This function prepares a data table for displaying by providing user-friendly names, removing unneeded variables, and formatting percentages.
-##
-## @param y A string specifying the column name to be used as the y-axis variable.
-## @param df A data frame containing the raw data.
-## @param df_summmarized A data frame containing the summarized data.
-## @param id A string specifying the ID associated with the data.
-## @param y_right An optional string specifying the column name to be used as the second y-axis variable. Default is NULL.
-## @param facet_var A symbol specifying the column to be used for faceting. Default is 'VIS_Groep'.
-## @param facet_name_var A symbol specifying the column to be used for faceting names. Default is 'VIS_Groep_naam'.
-## @param ... Further arguments passed on to the 'make_basic_table' function.
-## @return A DT::datatable object ready for displaying.
-prep_table <- function(y, df, df_summmarized, id, y_right = NULL, facet_var = rlang::sym("VIS_Groep"), facet_name_var = rlang::sym("VIS_Groep_naam"), ...) {
+#' Prepare a data table for displaying
+#'
+#' This function prepares a data table for displaying by providing user-friendly names, removing unneeded variables, and formatting percentages.
+#'
+#' @param y A string specifying the column name to be used as the y-axis variable.
+#' @param df A data frame containing the raw data.
+#' @param df_summarized A data frame containing the summarized data.
+#' @param id A string specifying the ID associated with the data.
+#' @param y_right An optional string specifying the column name to be used as the second y-axis variable. Default is NULL.
+#' @param facet_var A symbol specifying the column to be used for faceting. Default is 'VIS_Groep'.
+#' @param facet_name_var A symbol specifying the column to be used for faceting names. Default is 'VIS_Groep_naam'.
+#' @param table_type Choose from basic for a simple datatable and advanced for more buttons etc.
+#' @param rownames A logical value indicating whether to display row names.
+#' @param extensions A character vector specifying the DataTables extensions to be used.
+#' @param options_DT A list of DataTables options.
+#' @param limit_width A character string indicating how to limit column width.
+#' @param ... Further arguments passed on to the 'make_basic_table' function.
+#' @return A DT::datatable object ready for displaying.
+#' @export
+#' @examples
+#'df <- data.frame(VIS_Groep = c("Group1", "Group1", "Group2", "Group2"),
+#'                 VIS_Groep_naam = c("Name1", "Name1", "Name2", "Name2"),
+#'                 y = c(TRUE, TRUE, FALSE, FALSE), z = c(TRUE, FALSE, TRUE, FALSE))
+#'df_summarized <- df %>%
+#'  dplyr::group_by(VIS_Groep, VIS_Groep_naam) %>%
+#'  dplyr::summarise(
+#'    y = mean(y),
+#'    z = mean(z)
+#'  ) %>%
+#'  dplyr::ungroup()
+#'  id <- "id"
+#'output <- prep_table("y", df, df_summarized, id = id)
+#'
+prep_table <- function(y,
+                       df,
+                       df_summarized,
+                       id,
+                       y_right = NULL,
+                       facet_var = rlang::sym("VIS_Groep"),
+                       facet_name_var = rlang::sym("VIS_Groep_naam"),
+                       table_type = c("basic", "advanced"),
+                       rownames = FALSE,
+                       extensions = c("Buttons"),
+                       options_DT = basic_options(),
+                       limit_width = "values",
+                       ...) {
+  ## table type
+  table_type <- dplyr::first(table_type)
+
   ## Remove unneeded variables
-  dfTabel <- df_summmarized %>%
+  dfTabel <- df_summarized %>%
     dplyr::select(
       -!!facet_name_var,
       -!!facet_var
@@ -351,12 +386,30 @@ prep_table <- function(y, df, df_summmarized, id, y_right = NULL, facet_var = rl
   sBoolean_vars <- sBoolean_vars %>%
     purrr::map_chr(~ display_name(.x, id))
 
-  ## Make datatable object
-  dfTabel <- dfTabel %>%
-    make_basic_table(
-      caption = dplyr::first(df_summmarized[[facet_name_var]]), ...
-    ) %>%
-    DT::formatPercentage(sBoolean_vars, 2)
+  if (table_type == "basic") {
+    ## Make datatable object
+    dfTabel <- dfTabel %>%
+      make_basic_table(
+        rownames = rownames,
+        extensions = extensions,
+        options_DT = options_DT,
+        limit_width = limit_width,
+        caption = dplyr::first(df_summarized[[facet_name_var]]),
+        ...
+      ) %>%
+      DT::formatPercentage(sBoolean_vars, 2)
+  } else {
+    dfTabel <- dfTabel %>%
+      make_advanced_table(
+        rownames = rownames,
+        extensions = extensions,
+        options_DT = options_DT,
+        limit_width = limit_width,
+        caption = dplyr::first(df_summarized[[facet_name_var]]),
+        ...
+      ) %>%
+      DT::formatPercentage(sBoolean_vars, 2)
+  }
 
   return(dfTabel)
 }
