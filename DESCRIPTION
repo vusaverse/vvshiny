@@ -1,6 +1,6 @@
 Package: vvshiny
 Title: Create complex shiny apps more easily
-Version: 0.0.4.9000
+Version: 0.1.0
 Authors@R: 
   c(person(given = "Corneel", 
            family = "Den Hartogh", 
