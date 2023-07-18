@@ -351,8 +351,8 @@ grid_histograms <- function(df, x, color, y, id, y_left = NULL, y_right = NULL, 
 #' @param position_label_y A string specifying the position of y-axis labels.
 #' @return A Gantt plot.
 gantt_plot <- function(df, x, xend, split_var, title, position_label_y) {
-  plotly::ggplotly(
-    ggplot2::ggplot(
+
+  plot <- ggplot2::ggplot(
       df,
       ggplot2::aes(
         x = !!rlang::sym(x),
@@ -368,14 +368,21 @@ gantt_plot <- function(df, x, xend, split_var, title, position_label_y) {
       ggplot2::geom_segment(size = 6) +
       ggpubr::theme_pubr() +
       # ggplot_basic_settings() +
-      ggplot2::scale_color_manual(values = RColorBrewer::brewer.pal(name = "Set3", n = nrow(df)) %>% purrr::set_names(df[[split_var]])) +
       ggplot2::theme(legend.position = "none") +
       ggplot2::labs(x = NULL, y = NULL) +
       ggplot2::scale_x_continuous(labels = scales::label_percent()) +
       ggplot2::ggtitle(title) +
       ## Daarom extra plotly layout code toegevoegd
       ggplot2::scale_y_discrete(position = position_label_y)
-  ) %>%
+
+  if (!requireNamespace("RColorBrewer", quietly = TRUE)) {
+    rlang::inform("When the package RColorBrewer is installed, brewer palette Set3 is used")
+  }
+
+  plot <- plot +
+    ggplot2::scale_color_manual(values = RColorBrewer::brewer.pal(name = "Set3", n = nrow(df)) %>% purrr::set_names(df[[split_var]]))
+
+    plotly::ggplotly(plot) %>%
     plotly::layout(
       yaxis = list(side = position_label_y),
       legend =
