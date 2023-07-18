@@ -45,13 +45,13 @@ gantt_app <- function(df, df_config_gantt, id = "gantt") {
   shiny::shinyApp(ui, server)
 }
 
-#' Server function for gantt chart module
-#'
-#' @param id Module id
-#' @param df Data frame
-#' @param df_config_gantt Config data frame for gantt chart
-#'
-#' @return Shiny module server function
+## Server function for gantt chart module
+##
+## @param id Module id
+## @param df Data frame
+## @param df_config_gantt Config data frame for gantt chart
+##
+## @return Shiny module server function
 module_gantt_ind_server <- function(id, df, df_config_gantt) {
   shiny::moduleServer(id, function(input, output, session) {
 
@@ -108,7 +108,7 @@ module_gantt_ind_server <- function(id, df, df_config_gantt) {
           flow_perc = n / sum(n),
           flow_end_perc = cumsum(flow_perc),
           flow_start_perc = dplyr::lag(flow_end_perc),
-          flow_start_perc = tidyr::replace_na(flow_start_perc, 0)
+          flow_start_perc = ifelse(is.na(flow_start_perc), 0, flow_start_perc)
         ) %>%
         ## Limit number of values
         limit_n_values_gantt(split_var)
@@ -123,16 +123,16 @@ module_gantt_ind_server <- function(id, df, df_config_gantt) {
 }
 
 
-#' Limit number of values for Gantt chart
-#'
-#' This function limits the number of values displayed in a Gantt chart. If the number of distinct
-#' values in the specified variable is less than the limit, the function returns the original dataframe.
-#'
-#' @param df A dataframe to be processed
-#' @param split_var A character vector specifying the variable to be split
-#' @param n_values An integer specifying the maximum number of values (default is 12)
-#'
-#' @return A dataframe with a limited number of values for the Gantt chart
+## Limit number of values for Gantt chart
+##
+## This function limits the number of values displayed in a Gantt chart. If the number of distinct
+## values in the specified variable is less than the limit, the function returns the original dataframe.
+##
+## @param df A dataframe to be processed
+## @param split_var A character vector specifying the variable to be split
+## @param n_values An integer specifying the maximum number of values (default is 12)
+##
+## @return A dataframe with a limited number of values for the Gantt chart
 limit_n_values_gantt <- function(df, split_var, n_values = 12) {
   split_var_placeholder <- NULL
 
@@ -167,12 +167,12 @@ limit_n_values_gantt <- function(df, split_var, n_values = 12) {
 }
 
 
-#' UI function for gantt chart module
-#'
-#' @param id Module id
-#' @param df_config_gantt Config data frame for gantt chart
-#'
-#' @return Shiny fluidPage UI
+## UI function for gantt chart module
+##
+## @param id Module id
+## @param df_config_gantt Config data frame for gantt chart
+##
+## @return Shiny fluidPage UI
 module_gantt_ind_ui <- function(id, df_config_gantt) {
 
   ns <- shiny::NS(id)

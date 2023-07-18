@@ -23,11 +23,32 @@ single_module_ui <- function(request, id, tab_item) {
     )
   )
 
-  shinydashboardPlus::dashboardPage(DB_header,
-                                    DB_sidebar,
-                                    DB_body,
-                                    #DB_rightsidebar,
-                                    #freshTheme = NCO_theme,
-                                    preloader = list(html = htmltools::tagList(waiter::spin_1(), "Loading ..."), color = "#367fa9"), # "#3c8dbc"),))
-  )
+  if (!requireNamespace("waiter", quietly = TRUE)) {
+    rlang::inform("Install the waiter package to get a spinner for loading")
+    shinydashboardPlus::dashboardPage(
+      DB_header,
+      DB_sidebar,
+      DB_body#,
+      #DB_rightsidebar,
+      #freshTheme = NCO_theme,
+      #preloader = list(
+      #  html = htmltools::tagList(waiter::spin_1(), "Loading ..."),
+      #  color = "#367fa9"
+      #)
+    )
+  } else {
+
+
+    shinydashboardPlus::dashboardPage(
+      DB_header,
+      DB_sidebar,
+      DB_body,
+      #DB_rightsidebar,
+      #freshTheme = NCO_theme,
+      preloader = list(
+        html = htmltools::tagList(waiter::spin_1(), "Loading ..."),
+        color = "#367fa9"
+      )
+    )
+  }
 }

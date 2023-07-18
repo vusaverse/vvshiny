@@ -1,10 +1,10 @@
-#' Generate Javascript for datatable headers.
-#'
-#' This function generates Javascript code for datatable headers. The script adjusts header tooltips and names.
-#' The abbreviations have a minimum length of 7 characters.
-#'
-#' @param data An optional data.frame. Default is 'data' in the global environment.
-#' @return A character vector containing the JavaScript code.
+## Generate Javascript for datatable headers.
+##
+## This function generates Javascript code for datatable headers. The script adjusts header tooltips and names.
+## The abbreviations have a minimum length of 7 characters.
+##
+## @param data An optional data.frame. Default is 'data' in the global environment.
+## @return A character vector containing the JavaScript code.
 header_callback <- function(data = data) {
   ## De r code heeft geen toegang tot het data-object uit de Javascript functie.
   ## Voeg dit daarom toe als optionele variabele
@@ -33,12 +33,12 @@ header_callback <- function(data = data) {
   )
 }
 
-#' Generate Javascript for datatable cell values.
-#'
-#' This function generates Javascript code for datatable cell values. The script truncates cell values to 11 characters and adds a tooltip with the full value.
-#'
-#' @param data A data.frame.
-#' @return A character vector containing the JavaScript code.
+## Generate Javascript for datatable cell values.
+##
+## This function generates Javascript code for datatable cell values. The script truncates cell values to 11 characters and adds a tooltip with the full value.
+##
+## @param data A data.frame.
+## @return A character vector containing the JavaScript code.
 value_callback <- function(data) {
   ## Zie comment bij: https://vustudentanalytics.atlassian.net/browse/VUSASOFT-3541
 
@@ -51,31 +51,31 @@ value_callback <- function(data) {
 }
 
 
-#' Add header-related Javascript to datatable options.
-#'
-#' This function takes a list of datatable options and adds the header-related Javascript from 'header_callback' to these options.
-#'
-#' @param options A list of datatable options.
-#' @param data A data.frame.
-#' @return The updated list of datatable options.
-add_with_limit_header_JS <- function(options, data) {
+## Add header-related Javascript to datatable options.
+##
+## This function takes a list of datatable options and adds the header-related Javascript from 'header_callback' to these options.
+##
+## @param options_DT A list of datatable options.
+## @param data A data.frame.
+## @return The updated list of datatable options.
+add_with_limit_header_JS <- function(options_DT, data) {
   headerJS <- list(headerCallback = htmlwidgets::JS(header_callback(data)))
 
   ## Add header code
-  options <- c(options, headerJS)
+  options_DT <- c(options_DT, headerJS)
 
-  return(options)
+  return(options_DT)
 }
 
 
-#' Add value-related Javascript to datatable options.
-#'
-#' This function takes a list of datatable options and adds the value-related Javascript from 'value_callback' to these options.
-#'
-#' @param options A list of datatable options.
-#' @param data A data.frame.
-#' @return The updated list of datatable options.
-add_width_limit_values_JS <- function(options, data) {
+## Add value-related Javascript to datatable options.
+##
+## This function takes a list of datatable options and adds the value-related Javascript from 'value_callback' to these options.
+##
+## @param options_DT A list of datatable options_DT.
+## @param data A data.frame.
+## @return The updated list of datatable options_DT.
+add_width_limit_values_JS <- function(options_DT, data) {
   valueJS <- list(
     targets = "_all",
     render = htmlwidgets::JS(value_callback(data))
@@ -84,20 +84,20 @@ add_width_limit_values_JS <- function(options, data) {
   ## Extract current columnDefs internal lists (if set)
   ## Add valueJS to it and set new ColumnDefs
   ## INFO Code is a bit complex, but this method ensures it works also when columnDefs aren't set
-  new_columns_options <- append(options["columnDefs"] %>% unname() %>% rlang::flatten(), list(valueJS))
-  new_columns_options <- stats::setNames(list(new_columns_options), "columnDefs")
+  new_columns_options_DT <- append(options_DT["columnDefs"] %>% unname() %>% rlang::flatten(), list(valueJS))
+  new_columns_options_DT <- stats::setNames(list(new_columns_options_DT), "columnDefs")
 
-  options["columnDefs"] <- new_columns_options
+  options_DT["columnDefs"] <- new_columns_options_DT
 
-  return(options)
+  return(options_DT)
 }
 
 
-#' Get basic datatable options.
-#'
-#' This function returns a list of basic datatable options.
-#'
-#' @return A list of datatable options.
+## Get basic datatable options.
+##
+## This function returns a list of basic datatable options.
+##
+## @return A list of datatable options.
 basic_options <- function() {
   list(
     language = list(url = "//cdn.datatables.net/plug-ins/1.10.11/i18n/Dutch.json"),
@@ -119,11 +119,11 @@ basic_options <- function() {
 }
 
 
-#' Get advanced datatable options.
-#'
-#' This function returns a list of advanced datatable options.
-#'
-#' @return A list of datatable options.
+## Get advanced datatable options.
+##
+## This function returns a list of advanced datatable options.
+##
+## @return A list of datatable options.
 advanced_options <- function() {
   list(
     pagingType = "full",
@@ -147,66 +147,66 @@ advanced_options <- function() {
 
 
 
-#' Create a basic datatable.
-#'
-#' This function creates a basic datatable with various configurable options and features.
-#'
-#' @param data The data.frame to be displayed.
-#' @param rownames A logical value indicating whether to display row names.
-#' @param extensions A character vector specifying the DataTables extensions to be used.
-#' @param options A list of DataTables options.
-#' @param limit_width A character string indicating how to limit column width.
-#' @param ... Additional arguments passed to DT::datatable().
-#' @return A datatable object.
+## Create a basic datatable.
+##
+## This function creates a basic datatable with various configurable options and features.
+##
+## @param data The data.frame to be displayed.
+## @param rownames A logical value indicating whether to display row names.
+## @param extensions A character vector specifying the DataTables extensions to be used.
+## @param options_DT A list of DataTables options.
+## @param limit_width A character string indicating how to limit column width.
+## @param ... Additional arguments passed to DT::datatable().
+## @return A datatable object.
 make_basic_table <- function(data,
                              rownames = FALSE,
                              extensions = c("Buttons"),
-                             options = basic_options(),
+                             options_DT = basic_options(),
                              limit_width = "values",
                              ...) {
   if (limit_width == "both") {
     ## set JS
-    options <- add_width_limit_values_JS(options, data)
-    options <- add_with_limit_header_JS(options)
+    options_DT <- add_width_limit_values_JS(options_DT, data)
+    options_DT <- add_with_limit_header_JS(options_DT)
   } else if (limit_width == "values") {
-    options <- add_width_limit_values_JS(options, data)
+    options_DT <- add_width_limit_values_JS(options_DT, data)
   } else if (limit_width == "headers") {
-    options <- add_with_limit_header_JS(options)
+    options_DT <- add_with_limit_header_JS(options_DT)
   }
 
 
 
   ## Add some basic logic
-  if ("pageLength" %in% names(options)) {
+  if ("pageLength" %in% names(options_DT)) {
     # do nothing
   } else {
     if (nrow(data) <= 15) {
-      options <- c(options, paging = FALSE)
-      options <- c(options, info = FALSE)
+      options_DT <- c(options_DT, paging = FALSE)
+      options_DT <- c(options_DT, info = FALSE)
     }
   }
 
-  if ("searching" %in% names(options)) {
+  if ("searching" %in% names(options_DT)) {
     # do nothing
   } else {
     if (nrow(data) <= 15) {
-      options <- c(options, searching = FALSE)
+      options_DT <- c(options_DT, searching = FALSE)
     }
   }
 
-  if (nrow(data) > 15 & !("lengthChange" %in% options)) {
-    options <- c(options, list(lengthMenu = list(
+  if (nrow(data) > 15 & !("lengthChange" %in% options_DT)) {
+    options_DT <- c(options_DT, list(lengthMenu = list(
       c(10, -1),
       c("10", "All")
     )))
   } else {
-    options <- c(options, lengthChange = FALSE)
+    options_DT <- c(options_DT, lengthChange = FALSE)
   }
 
   DT::datatable(data,
     rownames = rownames,
     extensions = extensions,
-    options = options,
+    options = options_DT,
     ## Escape is always true for security reasons, see documentation
     escape = TRUE,
     style = "bootstrap",
@@ -215,51 +215,51 @@ make_basic_table <- function(data,
 }
 
 
-#' Create an advanced datatable.
-#'
-#' This function creates an advanced datatable with various configurable options and features.
-#'
-#' @param data The data.frame to be displayed.
-#' @param rownames A logical value indicating whether to display row names.
-#' @param filter A character string indicating where to display the table filter.
-#' @param extensions A character vector specifying the DataTables extensions to be used.
-#' @param options A list of DataTables options.
-#' @param limit_width A logical value indicating whether to limit column width.
-#' @param ... Additional arguments passed to DT::datatable().
-#' @return A datatable object.
+## Create an advanced datatable.
+##
+## This function creates an advanced datatable with various configurable options and features.
+##
+## @param data The data.frame to be displayed.
+## @param rownames A logical value indicating whether to display row names.
+## @param filter A character string indicating where to display the table filter.
+## @param extensions A character vector specifying the DataTables extensions to be used.
+## @param options_DT A list of DataTables options.
+## @param limit_width A logical value indicating whether to limit column width.
+## @param ... Additional arguments passed to DT::datatable().
+## @return A datatable object.
 make_advanced_table <- function(
     data,
     rownames = FALSE,
     filter = "top",
     extensions = c("Buttons", "ColReorder", "RowReorder"),
-    options = advanced_options(),
+    options_DT = advanced_options(),
     limit_width = "values",
     ...) {
   if (limit_width == "both") {
     ## set JS
-    options <- add_width_limit_values_JS(options, data)
-    options <- add_with_limit_header_JS(options)
+    options_DT <- add_width_limit_values_JS(options_DT, data)
+    options_DT <- add_with_limit_header_JS(options_DT)
   } else if (limit_width == "values") {
-    options <- add_width_limit_values_JS(options, data)
+    options_DT <- add_width_limit_values_JS(options_DT, data)
   } else if (limit_width == "headers") {
-    options <- add_with_limit_header_JS(options)
+    options_DT <- add_with_limit_header_JS(options_DT)
   }
 
   ## Voeg All als optie lengte tabel toe
-  if ("lengthMenu" %in% options) {
+  if ("lengthMenu" %in% options_DT) {
     ## do nothing
   } else {
-    options <- c(options, list(lengthMenu = list(
+    options_DT <- c(options_DT, list(lengthMenu = list(
       c(10, 25, 50, 100, -1),
       c("10", "25", "50", "100", "All")
     )))
   }
 
-  if ("pageLength" %in% names(options)) {
+  if ("pageLength" %in% names(options_DT)) {
     # do nothing
   } else {
     if (nrow(data) <= 25) {
-      options <- c(options, paging = FALSE)
+      options_DT <- c(options_DT, paging = FALSE)
     }
   }
 
@@ -267,7 +267,7 @@ make_advanced_table <- function(
     rownames = rownames,
     extensions = extensions,
     filter = filter,
-    options = options,
+    options = options_DT,
     ## Escape is always true for security reasons, see documentation
     escape = TRUE,
     ...
@@ -275,57 +275,57 @@ make_advanced_table <- function(
 }
 
 
-#' Create a basic datatable for HTML rendering.
-#'
-#' This function creates a basic datatable with options optimized for HTML rendering.
-#'
-#' @param data The data.frame to be displayed.
-#' @param ... Additional arguments passed to 'make_basic_table()'.
-#' @return A datatable object.
+## Create a basic datatable for HTML rendering.
+##
+## This function creates a basic datatable with options optimized for HTML rendering.
+##
+## @param data The data.frame to be displayed.
+## @param ... Additional arguments passed to 'make_basic_table()'.
+## @return A datatable object.
 make_basic_table_html <- function(data, ...) {
   make_basic_table(
     data,
     width = "100%",
     height = "auto",
-    options = c(basic_options(), scrollX = TRUE),
+    options_DT = c(basic_options(), scrollX = TRUE),
     limit_width = NULL,
     ...
   )
 }
 
 
-#' Create an advanced datatable for HTML rendering.
-#'
-#' This function creates an advanced datatable with options optimized for HTML rendering.
-#'
-#' @param data The data.frame to be displayed.
-#' @param ... Additional arguments passed to 'make_advanced_table()'.
-#' @return A datatable object.
+## Create an advanced datatable for HTML rendering.
+##
+## This function creates an advanced datatable with options optimized for HTML rendering.
+##
+## @param data The data.frame to be displayed.
+## @param ... Additional arguments passed to 'make_advanced_table()'.
+## @return A datatable object.
 make_advanced_table_html <- function(data, ...) {
   make_advanced_table(
     data,
     width = "100%",
     height = "auto",
-    options = c(basic_options(), scrollX = TRUE),
+    options_DT = c(basic_options(), scrollX = TRUE),
     limit_width = NULL,
     ...
   )
 }
 
 
-#' Prepare a data table for displaying
-#'
-#' This function prepares a data table for displaying by providing user-friendly names, removing unneeded variables, and formatting percentages.
-#'
-#' @param y A string specifying the column name to be used as the y-axis variable.
-#' @param df A data frame containing the raw data.
-#' @param df_summmarized A data frame containing the summarized data.
-#' @param id A string specifying the ID associated with the data.
-#' @param y_right An optional string specifying the column name to be used as the second y-axis variable. Default is NULL.
-#' @param facet_var A symbol specifying the column to be used for faceting. Default is 'VIS_Groep'.
-#' @param facet_name_var A symbol specifying the column to be used for faceting names. Default is 'VIS_Groep_naam'.
-#' @param ... Further arguments passed on to the 'make_basic_table' function.
-#' @return A DT::datatable object ready for displaying.
+## Prepare a data table for displaying
+##
+## This function prepares a data table for displaying by providing user-friendly names, removing unneeded variables, and formatting percentages.
+##
+## @param y A string specifying the column name to be used as the y-axis variable.
+## @param df A data frame containing the raw data.
+## @param df_summmarized A data frame containing the summarized data.
+## @param id A string specifying the ID associated with the data.
+## @param y_right An optional string specifying the column name to be used as the second y-axis variable. Default is NULL.
+## @param facet_var A symbol specifying the column to be used for faceting. Default is 'VIS_Groep'.
+## @param facet_name_var A symbol specifying the column to be used for faceting names. Default is 'VIS_Groep_naam'.
+## @param ... Further arguments passed on to the 'make_basic_table' function.
+## @return A DT::datatable object ready for displaying.
 prep_table <- function(y, df, df_summmarized, id, y_right = NULL, facet_var = rlang::sym("VIS_Groep"), facet_name_var = rlang::sym("VIS_Groep_naam"), ...) {
   ## Remove unneeded variables
   dfTabel <- df_summmarized %>%
