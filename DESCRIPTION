@@ -2,12 +2,19 @@ Package: vvshiny
 Title: Create complex shiny apps more easily
 Version: 0.0.4.9000
 Authors@R: 
-  person(
-    given = "Corneel", 
-    family = "Den Hartogh", 
-    role = c("aut", "cre", "cph"), 
-    email = "c.f.den.hartogh@vu.nl",
-    comment = c(ORCID = "0000-0001-8347-7944"))
+  c(person(given = "Corneel", 
+           family = "Den Hartogh", 
+           role = c("aut", "cre"), 
+           email = "c.f.den.hartogh@vu.nl",
+           comment = c(ORCID = "0000-0001-8347-7944")
+           ),
+    person(given = "Tomer",
+           family = "Iwan",
+           role = "ctb"
+           ),
+    person(given = "VU Analytics",
+           role = "c(cph, cre")
+           )
 Description: Helper and Wrapper functions for making shinydasboards more easily. Functions are made modular so choices can be made on more than one level.
 License: MIT + file LICENSE
 Encoding: UTF-8
