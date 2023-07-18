@@ -25,18 +25,6 @@
     <loc>/news/index.html</loc>
   </url>
   <url>
-    <loc>/reference/add_width_limit_values_JS.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_with_limit_header_JS.html</loc>
-  </url>
-  <url>
-    <loc>/reference/advanced_options.html</loc>
-  </url>
-  <url>
-    <loc>/reference/basic_options.html</loc>
-  </url>
-  <url>
     <loc>/reference/basic_plot.html</loc>
   </url>
   <url>
@@ -79,9 +67,6 @@
     <loc>/reference/grid_histograms.html</loc>
   </url>
   <url>
-    <loc>/reference/header_callback.html</loc>
-  </url>
-  <url>
     <loc>/reference/index.html</loc>
   </url>
   <url>
@@ -89,27 +74,6 @@
   </url>
   <url>
     <loc>/reference/keep_values.html</loc>
-  </url>
-  <url>
-    <loc>/reference/limit_n_values_gantt.html</loc>
-  </url>
-  <url>
-    <loc>/reference/make_advanced_table.html</loc>
-  </url>
-  <url>
-    <loc>/reference/make_advanced_table_html.html</loc>
-  </url>
-  <url>
-    <loc>/reference/make_basic_table.html</loc>
-  </url>
-  <url>
-    <loc>/reference/make_basic_table_html.html</loc>
-  </url>
-  <url>
-    <loc>/reference/module_gantt_ind_server.html</loc>
-  </url>
-  <url>
-    <loc>/reference/module_gantt_ind_ui.html</loc>
   </url>
   <url>
     <loc>/reference/pickerGanttValues.html</loc>
@@ -145,9 +109,6 @@
     <loc>/reference/prep_df_summ_aggr.html</loc>
   </url>
   <url>
-    <loc>/reference/prep_table.html</loc>
-  </url>
-  <url>
     <loc>/reference/present_and_correct.html</loc>
   </url>
   <url>
@@ -163,25 +124,10 @@
     <loc>/reference/stacked_composition_bar_chart.html</loc>
   </url>
   <url>
-    <loc>/reference/tabPanelTables.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tabTableOne.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tabTableTwo.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tabellenPopover.html</loc>
-  </url>
-  <url>
     <loc>/reference/taskItemTab.html</loc>
   </url>
   <url>
     <loc>/reference/transform_input.html</loc>
-  </url>
-  <url>
-    <loc>/reference/value_callback.html</loc>
   </url>
   <url>
     <loc>/reference/vvshiny-package.html</loc>
