@@ -13,7 +13,7 @@ test_that("prep_df works as expected", {
   color_var = "color_var"
   dfPrepared <- prep_df(lFilters, lValues_for_naming, df, color_var, facet = "right")
 
-  expect_equal(nrow(dfPrepared), sum(df$var1 %in% c("A")))
+  expect_equal(nrow(dfPrepared), sum(df$var1 == "A"))
   expect_equal(unique(dfPrepared$VIS_Groep), "right")
   expect_s3_class(dfPrepared$color_var, "factor")
 })

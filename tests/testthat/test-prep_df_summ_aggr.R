@@ -49,7 +49,7 @@ test_that("prep_df_summ_aggr returns expected summarized dataframe", {
     Aantal = c(80, 100, 60, 40, 20)
   ) %>% dplyr::as_tibble()
 
-  result <- prep_df_summ_aggr(df, c("split_var"), "value", "color", total_n_var = rlang::sym("total"), aggr_split_value_var = rlang::sym("split_var_value"))
+  result <- prep_df_summ_aggr(df, "split_var", "value", "color", total_n_var = rlang::sym("total"), aggr_split_value_var = rlang::sym("split_var_value"))
 
   expect_equal(result, expected)
 
