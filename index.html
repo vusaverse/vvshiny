@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">vvshiny</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
       </span>
     </div>
 
@@ -71,45 +71,46 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
-<p><!-- badges: start --> <a href="https://github.com/vusaverse/vvshiny/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/vusaverse/vvshiny/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://www.codefactor.io/repository/github/vusaverse/vvshiny" class="external-link"><img src="https://www.codefactor.io/repository/github/vusaverse/vvshiny/badge" alt="CodeFactor"></a> <!-- badges: end --> # README #</p>
-<p>This README would normally document whatever steps are necessary to get your application up and running.</p>
+
+<div class="section level1">
+<div class="page-header"><h1 id="vvshiny">vvshiny<a class="anchor" aria-label="anchor" href="#vvshiny"></a>
+</h1></div>
+<p>vvshiny is a helpful package that provides helper and wrapper functions for making shinydashboards more easily. With modular functions and support for choices on multiple levels, vvshiny simplifies the process of creating interactive and dynamic Shiny dashboards.</p>
 <div class="section level3">
-<h3 id="what-is-this-repository-for">What is this repository for?<a class="anchor" aria-label="anchor" href="#what-is-this-repository-for"></a>
+<h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h3>
-<ul>
-<li>Quick summary</li>
-<li>Version</li>
-<li><a href="https://bitbucket.org/tutorials/markdowndemo" class="external-link">Learn Markdown</a></li>
-</ul>
+<p>You can install vvshiny directly from GitHub using the remotes package:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"vusaverse/vvshiny"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="how-do-i-get-set-up">How do I get set up?<a class="anchor" aria-label="anchor" href="#how-do-i-get-set-up"></a>
+<h3 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
 </h3>
-<ul>
-<li>Summary of set up</li>
-<li>Configuration</li>
-<li>Dependencies</li>
-<li>Database configuration</li>
-<li>How to run tests</li>
-<li>Deployment instructions</li>
-</ul>
+<div class="section level4">
+<h4 id="gantt_app">gantt_app<a class="anchor" aria-label="anchor" href="#gantt_app"></a>
+</h4>
+<p>One of the main functions provided by vvshiny is gantt_app. This function allows you to create Gantt charts within your Shiny dashboard. It takes the following parameters: - df: The data frame containing the Gantt chart data. - df_config_gantt: The data frame specifying the configuration options for the Gantt chart. - id: (Optional) The ID of the Gantt chart component (default: “gantt”).</p>
+<p>Here’s an example of how to use the gantt_app function:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">vvshiny</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create the Gantt chart app</span></span>
+<span><span class="fu"><a href="reference/gantt_app.html">gantt_app</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">my_data</span>, df_config_gantt <span class="op">=</span> <span class="va">my_config</span>, id <span class="op">=</span> <span class="st">"my_gantt_chart"</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level3">
-<h3 id="contribution-guidelines">Contribution guidelines<a class="anchor" aria-label="anchor" href="#contribution-guidelines"></a>
+<h3 id="development">Development<a class="anchor" aria-label="anchor" href="#development"></a>
 </h3>
-<ul>
-<li>Writing tests</li>
-<li>Code review</li>
-<li>Other guidelines</li>
-</ul>
+<p>The package is still under active development. In addition to gantt more charts will be provided. In addition, the parameters of the exported functions will be made more flexible. Integrations with datamods and a LLM are also desired.</p>
 </div>
 <div class="section level3">
-<h3 id="who-do-i-talk-to">Who do I talk to?<a class="anchor" aria-label="anchor" href="#who-do-i-talk-to"></a>
+<h3 id="contribution">Contribution<a class="anchor" aria-label="anchor" href="#contribution"></a>
 </h3>
 <ul>
-<li>Repo owner or admin</li>
-<li>Other community or team contact</li>
+<li>Feel free to open an issue or suggest improvements</li>
+<li>Pull requests are in general also welcome</li>
 </ul>
+</div>
 </div>
 
   </div>
@@ -139,7 +140,13 @@
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/vusaverse/vvshiny/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/vusaverse/vvshiny/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://www.codefactor.io/repository/github/vusaverse/vvshiny" class="external-link"><img src="https://www.codefactor.io/repository/github/vusaverse/vvshiny/badge" alt="CodeFactor"></a></li>
+</ul>
+</div>
 
   </div>
 </div>
