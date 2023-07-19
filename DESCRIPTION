@@ -1,5 +1,5 @@
 Package: vvshiny
-Title: Create complex shiny apps more easily
+Title: Create Complex Shiny Apps More Easily
 Version: 0.1.0
 Authors@R: 
   c(person(given = "Corneel", 
@@ -13,9 +13,9 @@ Authors@R:
            role = "ctb"
            ),
     person(given = "VU Analytics",
-           role = c("cph")
+           role = "cph"
            ))
-Description: Helper and Wrapper functions for making shinydasboards more easily. Functions are made modular so choices can be made on more than one level.
+Description: Helper and Wrapper functions for making shiny dashboards more easily. Functions are made modular and lower level functions are exported as well, so many use-cases are supported.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
