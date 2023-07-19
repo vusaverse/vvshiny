@@ -85,6 +85,20 @@
 <p>An HTML list item.</p>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">taskItemTab</span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Selected tab"</span>, tab_name <span class="op">=</span> <span class="st">"Tab1"</span>, tabSelect <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;li&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;a onclick="shinyjs.tabSelect(&amp;#39;Tab1&amp;#39;)" data-tab-name="Tab1"&gt;Selected tab&lt;/a&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/li&gt;</span>
+<span class="r-in"><span><span class="fu">taskItemTab</span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Other tab"</span>, tab_name <span class="op">=</span> <span class="st">"Tab2"</span>, tabSelect <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;li&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;a href="#"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;h3&gt;Other tab&lt;/h3&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;/a&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/li&gt;</span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
