@@ -21,3 +21,7 @@ An HTML list item.
 \description{
 Item for above dropdownActionMenu function.
 }
+\examples{
+taskItemTab(text = "Selected tab", tab_name = "Tab1", tabSelect = TRUE)
+taskItemTab(text = "Other tab", tab_name = "Tab2", tabSelect = FALSE)
+}

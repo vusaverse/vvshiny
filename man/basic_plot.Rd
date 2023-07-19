@@ -41,3 +41,16 @@ A ggplot plot.
 \description{
 This function creates a basic plot with the help of ggplot.
 }
+\examples{
+df <- data.frame(x_var = rnorm(100),
+                 y_var = rnorm(100),
+                 color_var = sample(c("Red", "Blue"),
+                 100,
+                 replace = TRUE))
+xlab_setting <- ggplot2::xlab("x label")
+ylab_setting <- ggplot2::ylab("y label")
+ggplot_instellingen <- ggplot2::geom_point()
+scale_y <- ggplot2::scale_y_continuous()
+basic_plot(df, "x_var", "y_var", "color_var", xlab_setting,
+           ylab_setting, ggplot_instellingen, "none", scale_y)
+}

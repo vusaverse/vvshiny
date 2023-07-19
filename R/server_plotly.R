@@ -8,6 +8,20 @@
 #' name
 #' @return A plotly object with a formatted legend.
 #' @export
+#' @examples
+#' df <- data.frame(x_var = rnorm(100),
+#'                  y_var = rnorm(100),
+#'                  color_var = sample(c("Red", "Blue"),
+#'                  100,
+#'                  replace = TRUE))
+#' xlab_setting <- ggplot2::xlab("x label")
+#' ylab_setting <- ggplot2::ylab("y label")
+#' ggplot_instellingen <- ggplot2::geom_point()
+#' scale_y <- ggplot2::scale_y_continuous()
+#' plot <- basic_plot(df, "x_var", "y_var", "color_var", xlab_setting,
+#'                    ylab_setting, ggplot_instellingen, "none", scale_y)
+#' mapping_table <- list(color_var = "user friendly name var")
+#' plotly_object <- ggplotly_with_legend(plot, "color_var", mapping_table)
 ggplotly_with_legend <- function(plot, color, mapping_table) {
   plot <- plotly::ggplotly(plot) %>%
     plotly::layout(

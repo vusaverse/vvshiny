@@ -32,3 +32,6 @@ A dropdown menu in the form of an HTML list.
 \description{
 Dropdown that is actually more of a menu with adapted tasks.
 }
+\examples{
+dropdownTabMenu(type = "messages", title = "Category tab items")
+}

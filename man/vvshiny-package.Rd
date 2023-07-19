@@ -4,9 +4,9 @@
 \name{vvshiny-package}
 \alias{vvshiny}
 \alias{vvshiny-package}
-\title{vvshiny: Create complex shiny apps more easily}
+\title{vvshiny: Create Complex Shiny Apps More Easily}
 \description{
-Helper and Wrapper functions for making shinydasboards more easily. Functions are made modular so choices can be made on more than one level.
+Helper and Wrapper functions for making shiny dashboards more easily. Functions are made modular and lower level functions are exported as well, so many use-cases are supported.
 }
 \author{
 \strong{Maintainer}: Corneel Den Hartogh \email{c.f.den.hartogh@vu.nl} (\href{https://orcid.org/0000-0001-8347-7944}{ORCID})

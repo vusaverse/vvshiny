@@ -15,11 +15,19 @@ tabPanelTables <- function(id, table_one = "tabel", table_two = "tabel_twee") {
 }
 
 
-## @title tabTableOne function
-## @description Function to create a tab panel with one table.
-## @param id A string representing the id.
-## @param table_one A string representing the table.
-## @return A tab panel with one table.
+#' @title tabTableOne function
+#' @description Function to create a tab panel with one table.
+#' @param id A string representing the id.
+#' @param table_one A string representing the table.
+#' @return A tab panel with one table.
+#' @export
+#' @examples
+#' dummy_data <- data.frame(
+#'   A = 1:5,
+#'   B = letters[1:5]
+#' )
+#' dummy_dt <- DT::datatable(dummy_data)
+#' tabTableOne("dummy_id", dummy_dt)
 tabTableOne <- function(id, table_one) {
   shiny::tabPanel(
     "Tabel",
@@ -34,12 +42,25 @@ tabTableOne <- function(id, table_one) {
 }
 
 
-## @title tabTableTwo function
-## @description Function to create a tab panel with two tables.
-## @param id A string representing the id.
-## @param table_one A string representing the first table.
-## @param table_two A string representing the second table.
-## @return A tab panel with two tables.
+#' @title tabTableTwo function
+#' @description Function to create a tab panel with two tables.
+#' @param id A string representing the id.
+#' @param table_one A string representing the first table.
+#' @param table_two A string representing the second table.
+#' @return A tab panel with two tables.
+#' @export
+#' @examples
+#' dummy_data1 <- data.frame(
+#'   A = 1:5,
+#'   B = letters[1:5]
+#' )
+#' dummy_dt1 <- DT::datatable(dummy_data1)
+#' dummy_data2 <- data.frame(
+#' X = 6:10,
+#' Y = letters[6:10]
+#' )
+#' dummy_dt2 <- DT::datatable(dummy_data2)
+#' tabTableTwo("dummy_id", dummy_dt1, dummy_dt2)
 tabTableTwo <- function(id, table_one, table_two) {
   shiny::tabPanel(
     "Tabel",
@@ -74,6 +95,7 @@ tabellenPopover <- function(..., tabblad) {
 
   tabblad_tekst <- paste0("<br>", tabblad_info, "</br>")
 
+  # Guard clause
   if (!requireNamespace("spsComps", quietly = TRUE)) {
     rlang::abort("The package spsComps should be installed for this funtion to work")
   }

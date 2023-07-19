@@ -14,11 +14,11 @@
 #' @return A dataframe obtained by binding dfLeft and dfRight, with additional transformations applied
 #' @export
 #' @examples
-#'   df1 <- data.frame(x = 1:5, y = rnorm(5), VIS_Groep_naam = "One")
-#'   df2 <- data.frame(x = 6:10, y = rnorm(5), VIS_Groep_naam = "Two")
-#'   df_both <- bind_both(df1, df2, id = "test",
-#'                        y_left = "y", y_right = "y",
-#'                        facet_var = rlang::sym("x"))
+#' df1 <- data.frame(x = 1:5, y = rnorm(5), VIS_Groep_naam = "One")
+#' df2 <- data.frame(x = 6:10, y = rnorm(5), VIS_Groep_naam = "Two")
+#' df_both <- bind_both(df1, df2, id = "test",
+#'                      y_left = "y", y_right = "y",
+#'                      facet_var = rlang::sym("x"))
 bind_both <- function(dfLeft, dfRight, id = "bench", y_left = NULL, y_right = NULL, facet_var = rlang::sym("VIS_Groep"), facet_name_var = rlang::sym("VIS_Groep_naam")) {
   y <- NULL
 

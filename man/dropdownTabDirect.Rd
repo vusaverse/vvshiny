@@ -32,3 +32,6 @@ A dropdown menu in the form of an HTML list, where clicking the dropdown directs
 \description{
 Dropdown that is actually a link to a tab.
 }
+\examples{
+dropdownTabDirect(type = "messages", tab_name = "Tab1", title = "Interesting tab")
+}
