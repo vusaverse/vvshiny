@@ -12,9 +12,11 @@
 #' @param y_right The variable used on the right y-axis when creating a comparative plot.
 #' @param facet_var The variable used for facet wrapping.
 #' @param facet_name_var The name of the variable used for facet wrapping.
+#' @param plotly_xanchor A setting to manipulate the plotly legend xanchor value, see: https://plotly.com/r/reference/layout/#layout-legend-xanchor
+#' @param plotly_yanchor A setting to manipulate the plotly legend yanchor value, see: https://plotly.com/r/reference/layout/#layout-legend-yanchor
 #'
 #' @return A ggplot object.
-wrapped_chart <- function(df, x, y, color, id = "bench", df_original, y_left = NULL, y_right = NULL, facet_var = rlang::sym("VIS_Groep"), facet_name_var = rlang::sym("VIS_Groep_naam")) {
+wrapped_chart <- function(df, x, y, color, id = "bench", df_original, y_left = NULL, y_right = NULL, facet_var = rlang::sym("VIS_Groep"), facet_name_var = rlang::sym("VIS_Groep_naam"), plotly_xanchor = "center", plotly_yanchor = "top") {
   ## Depending on the type of plot, set facet wrap and labels settings
   if (stringr::str_detect(id, "bench")) {
     facet_wrap_setting <- ggplot2::facet_wrap(ggplot2::vars(!!facet_name_var))
@@ -71,7 +73,7 @@ wrapped_chart <- function(df, x, y, color, id = "bench", df_original, y_left = N
   }
 
   ## Add legend using ggplotly
-  plot <- ggplotly_with_legend(plot, color, id)
+  plot <- ggplotly_with_legend(plot, color, id, plotly_xanchor, plotly_yanchor)
 
   return(plot)
 }
@@ -412,8 +414,16 @@ gantt_plot <- function(df, x, xend, split_var, title, position_label_y) {
 #' @param title_size Numeric value specifying the size of the title.
 #' @param title_font A string specifying the font of the title.
 #' @return A Sankey plot.
-sankey_plot <- function(df, left_var, right_var, xlab_setting, ylab_setting, name_left, name_right, title, title_size = 20, title_font = "verdana") {
+sankey_plot <- function(df, left_var, right_var, xlab_setting, ylab_setting, name_left, name_right, title, title_size = 20, title_font = "Verdana") {
+
+  if (!requireNamespace("ggalluvial", quietly = TRUE)) {
+    rlang::abort("The package ggalluvial should be installed for this funtion to work")
+  }
+
   n <- stratum <- NULL
+
+  StatStratum <- ggalluvial::StatStratum
+  windowsFonts(title_font = windowsFont(title_font))
 
   ggplot2::ggplot(
     data = df,
@@ -431,7 +441,7 @@ sankey_plot <- function(df, left_var, right_var, xlab_setting, ylab_setting, nam
     ggalluvial::geom_stratum(na.rm = FALSE, alpha = 1, width = 1 / 8) +
     ggplot2::geom_text(stat = "stratum", ggplot2::aes(label = ggplot2::after_stat(stratum))) +
     ggpubr::theme_pubr() +
-    ggplot2::theme(plot.title = ggplot2::element_text(size = title_size, family = "verdana")) +
+    ggplot2::theme(plot.title = ggplot2::element_text(size = title_size, family = "title_font")) +
     ggplot2::ggtitle(title) +
     ggplot2::guides(fill = "none")
 }

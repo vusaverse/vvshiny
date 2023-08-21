@@ -22,15 +22,34 @@
 #'                    ylab_setting, ggplot_instellingen, "none", scale_y)
 #' mapping_table <- list(color_var = "user friendly name var")
 #' plotly_object <- ggplotly_with_legend(plot, "color_var", mapping_table)
-ggplotly_with_legend <- function(plot, color, mapping_table) {
+ggplotly_with_legend <- function(plot, color, mapping_table, xanchor = "center", yanchor = "top") {
+
+
+  ## Set appropriate values for default settings
+  if (yanchor == "top") {
+    y = 1.22
+  } else {
+    y = 1
+  }
+
+  if (xanchor == "center")  {
+    x = 0.5
+  } else {
+    x = 1
+  }
+
+
   plot <- plotly::ggplotly(plot) %>%
     plotly::layout(
       legend =
         list(
           orientation = "h",
-          xanchor = "center",
-          x = 0.5,
-          y = 1.20,
+          xanchor = xanchor,
+          yanchor = yanchor,
+          xref = "container",
+          yref = "container",
+          x = x,
+          y = y,
           title = list(text = display_name(color, mapping_table))
         )
     )
