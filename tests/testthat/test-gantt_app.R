@@ -10,7 +10,7 @@ test_that("gantt_app runs without errors", {
     "TAAL EN CULTUUR", "RECHT", "niet westerse talen en culturen", "notariaat"
   )
 
-  df_config_gantt <- dplyr::tribble(
+  df_config <- dplyr::tribble(
     ~Categorie, ~Veldnaam, ~Veldnaam_gebruiker, ~input_var, ~target_var, ~title_start, ~title_end, ~position_y_label,
     "Doorstroom vanuit B",	"OPL_Onderdeel_CROHO_examen",	"B Croho sector", "OPL_Onderdeel_CROHO_examen",	"OPL_Onderdeel_CROHO_instroom",	"Waar stromen", "Bachelor gediplomeerden naar toe?",	"right",
     "Doorstroom vanuit B",	"OPL_CBS_Label_rubriek_examen",	"B ISCED-F Rubriek", "OPL_CBS_Label_rubriek_examen",	"OPL_CBS_Label_rubriek_instroom",	"Waar stromen", "Bachelor gediplomeerden naar toe?",	"right",
@@ -19,7 +19,10 @@ test_that("gantt_app runs without errors", {
   )
 
 
-  gantt_app(df = df, df_config_gantt = df_config_gantt)
+  app <- gantt_app(df, df_config)
+
+  expect_silent(app)
+  expect_s3_class(app, "shiny.appobj")
 
   expect_true(TRUE)
 })
