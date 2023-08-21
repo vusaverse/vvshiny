@@ -1,7 +1,7 @@
 #' Gantt Chart Shiny App
 #'
 #' @param df Data frame for Gantt chart
-#' @param df_config_gantt Config data frame for Gantt chart
+#' @param df_config Config data frame for Gantt chart
 #' @param id Module ID for Gantt chart
 #'
 #' @return Shiny app object
@@ -15,7 +15,7 @@
 #' "notariaat", "notariaat", "TAAL EN CULTUUR", "RECHT", "niet westerse talen en culturen",
 #' "notariaat")
 #'
-#' df_config_gantt <- dplyr::tribble( ~Categorie, ~Veldnaam, ~Veldnaam_gebruiker, ~input_var,
+#' df_config <- dplyr::tribble( ~Categorie, ~Veldnaam, ~Veldnaam_gebruiker, ~input_var,
 #' ~target_var, ~title_start, ~title_end, ~position_y_label, "Doorstroom vanuit B ",
 #' "OPL_Onderdeel_CROHO_examen",	"B Croho sector", "OPL_Onderdeel_CROHO_examen",
 #' "OPL_Onderdeel_CROHO_instroom",	"Waar stromen", "Bachelor gediplomeerden naar toe?",	"right",
@@ -26,20 +26,20 @@
 #' "Waarvandaan stromen ", " Master studenten in?", "left", "Instroom bij M",
 #' "OPL_CBS_Label_rubriek_instroom", "M ISCED-F Rubriek", "OPL_CBS_Label_rubriek_instroom",
 #' "OPL_CBS_Label_rubriek_examen", "Waarvandaan stromen ", " Master studenten in?", "left" )
-gantt_app <- function(df, df_config_gantt, id = "gantt") {
+gantt_app <- function(df, df_config = NULL, id = "gantt") {
   if(!exists("request")) {
     request <- NULL
   }
 
   #tabItems <- list(
-  #  shinydashboard::tabItem(tabName = id, module_gantt_ind_ui(id, df_config_gantt))
+  #  shinydashboard::tabItem(tabName = id, module_gantt_ind_ui(id, df_config))
   #)
   #test <- shinydashboard::tabItems(tabItems)
 
-  ui <- single_module_ui(request, id, tab_item = shinydashboard::tabItem(tabName = id, module_gantt_ind_ui(id, df_config_gantt)))
+  ui <- single_module_ui(request, id, tab_item = shinydashboard::tabItem(tabName = id, module_gantt_ind_ui(id, df, df_config)))
 
   server <- function(input, output, session) {
-    module_gantt_ind_server(id, df, df_config_gantt)
+    module_gantt_ind_server(id, df, df_config)
   }
 
   shiny::shinyApp(ui, server)
@@ -49,10 +49,10 @@ gantt_app <- function(df, df_config_gantt, id = "gantt") {
 ##
 ## @param id Module id
 ## @param df Data frame
-## @param df_config_gantt Config data frame for gantt chart
+## @param df_config Config data frame for gantt chart
 ##
 ## @return Shiny module server function
-module_gantt_ind_server <- function(id, df, df_config_gantt) {
+module_gantt_ind_server <- function(id, df, df_config = NULL) {
   shiny::moduleServer(id, function(input, output, session) {
 
     input_var <- position_y_label <- n <- flow_perc <- flow_perc <- flow_end_perc <- NULL
@@ -63,18 +63,18 @@ module_gantt_ind_server <- function(id, df, df_config_gantt) {
 
       shiny::req(input$input_var)
 
-      htmltools::tagList(
+      shiny::tagList(
         pickerGanttValues(id, input$input_var, df)
       )
     })
 
-    ## Maak UI om te dplyr::filteren op geselecteerde variabele
+    ## Maak UI om te filteren op geselecteerde variabele
     output$target_var <- shiny::renderUI({
 
       shiny::req(input$input_var)
 
-      htmltools::tagList(
-        pickerGanttVar(id, "target_var", df_config_gantt, input$input_var)
+      shiny::tagList(
+        pickerGanttVar(id, "target_var", df, df_config, input$input_var)
       )
     })
 
@@ -89,10 +89,16 @@ module_gantt_ind_server <- function(id, df, df_config_gantt) {
 
 
       split_var <- input$target_var
-      position_label_y <- df_config_gantt %>% dplyr::filter(input_var == input_var_value) %>% dplyr::pull(position_y_label) %>% dplyr::first()
-      title_start = df_config_gantt %>% dplyr::filter(input_var == input_var_value) %>% dplyr::pull(title_start) %>% dplyr::first()
-      title_end = df_config_gantt %>% dplyr::filter(input_var == input_var_value) %>% dplyr::pull(title_end) %>% dplyr::first()
-      title = paste0(title_start, filter_value, title_end)
+
+      if (!is.null(df_config)) {
+        position_label_y <- df_config %>% dplyr::filter(input_var == input_var_value) %>% dplyr::pull(position_y_label) %>% dplyr::first()
+        title_start = df_config %>% dplyr::filter(input_var == input_var_value) %>% dplyr::pull(title_start) %>% dplyr::first()
+        title_end = df_config %>% dplyr::filter(input_var == input_var_value) %>% dplyr::pull(title_end) %>% dplyr::first()
+        title = paste0(title_start, filter_value, title_end)
+      } else {
+        position_label_y <- "left"
+        title <- ""
+      }
 
       ## TODO Functie
       ## dplyr::filter gantt based on selections
@@ -170,10 +176,10 @@ limit_n_values_gantt <- function(df, split_var, n_values = 12) {
 ## UI function for gantt chart module
 ##
 ## @param id Module id
-## @param df_config_gantt Config data frame for gantt chart
+## @param df_config Config data frame for gantt chart
 ##
 ## @return Shiny fluidPage UI
-module_gantt_ind_ui <- function(id, df_config_gantt) {
+module_gantt_ind_ui <- function(id, df, df_config = NULL) {
 
   ns <- shiny::NS(id)
 
@@ -191,7 +197,7 @@ module_gantt_ind_ui <- function(id, df_config_gantt) {
     shinydashboardPlus::dashboardSidebar(
       # TODO add filters
       shinydashboard::sidebarMenu(
-        pickerGanttVar(id, "input_var", df_config_gantt),
+        pickerGanttVar(id, "input_var", df, df_config),
         shiny::uiOutput(ns("filter_values")),
         shiny::uiOutput(ns("target_var"))
 
