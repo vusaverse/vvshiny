@@ -23,28 +23,26 @@ RoxygenNote: 7.2.3
 Imports: 
   stats,
   dplyr,
-  magrittr,
   purrr,
   rlang,
   stringr,
   forcats,
   ggplot2,
-  ggpubr,
   scales,
-  ggalluvial,
   shiny,
   shinycssloaders,
   shinydashboard,
   shinydashboardPlus,
   shinyWidgets,
-  htmlwidgets,
-  htmltools,
   plotly,
-  DT
+  DT,
+  ggpubr
 Suggests:
   RColorBrewer,
   waiter,
   spsComps,
+  ggalluvial,
+  datamods,
   knitr,
   rmarkdown,
   testthat (>= 3.0.0)
