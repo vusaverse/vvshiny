@@ -30,13 +30,13 @@ dropdownTabMenu <- function(...,
   items <- c(list(...), .list)
 
   dropdownClass <- paste0("dropdown ", type, "-menu")
-  htmltools::tags$li(class = dropdownClass, htmltools::a(
+  shiny::tags$li(class = dropdownClass, shiny::a(
     href = "#", class = "dropdown-toggle",
     `data-toggle` = "dropdown", icon, title
-  ), htmltools::tags$ul(
+  ), shiny::tags$ul(
     class = "dropdown-menu",
-    if (!is.null(header)) htmltools::tags$li(class = "header", header),
-    htmltools::tags$li(htmltools::tags$ul(class = "menu", items))
+    if (!is.null(header)) shiny::tags$li(class = "header", header),
+    shiny::tags$li(shiny::tags$ul(class = "menu", items))
   ))
 }
 
@@ -67,9 +67,9 @@ dropdownTabDirect <- function(type = c("messages", "notifications", "tasks"), ta
   tabSelect <- TRUE
   dropdownClass <- paste0("dropdown ", type, "-menu")
 
-  htmltools::tags$li(
+  shiny::tags$li(
     class = dropdownClass,
-    htmltools::a(
+    shiny::a(
       href = "#",
       onclick = paste0("shinyjs.tabSelect('", tab_name, "')"),
       icon,
@@ -98,8 +98,8 @@ taskItemTab <- function(text, tab_name = NULL, href = NULL, tabSelect = FALSE) {
   if (is.null(href)) href <- "#"
 
   if (tabSelect) {
-    htmltools::tags$li(htmltools::a(onclick = paste0("shinyjs.tabSelect('", tab_name, "')"), text, `data-tab-name` = tab_name))
+    shiny::tags$li(shiny::a(onclick = paste0("shinyjs.tabSelect('", tab_name, "')"), text, `data-tab-name` = tab_name))
   } else {
-    htmltools::tags$li(htmltools::a(href = href, htmltools::h3(text)))
+    shiny::tags$li(shiny::a(href = href, shiny::h3(text)))
   }
 }

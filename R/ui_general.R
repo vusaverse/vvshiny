@@ -17,7 +17,7 @@ single_module_ui <- function(request, id, tab_item) {
     )
   )
   DB_body <- shinydashboard::dashboardBody(
-    htmltools::tags$script(src = "https://kit.fontawesome.com/01cb805c1e.js"),
+    shiny::tags$script(src = "https://kit.fontawesome.com/01cb805c1e.js"),
     shinydashboard::tabItems(
       tab_item
     )
@@ -32,7 +32,7 @@ single_module_ui <- function(request, id, tab_item) {
       #DB_rightsidebar,
       #freshTheme = NCO_theme,
       #preloader = list(
-      #  html = htmltools::tagList(waiter::spin_1(), "Loading ..."),
+      #  html = shiny::tagList(waiter::spin_1(), "Loading ..."),
       #  color = "#367fa9"
       #)
     )
@@ -46,7 +46,7 @@ single_module_ui <- function(request, id, tab_item) {
       #DB_rightsidebar,
       #freshTheme = NCO_theme,
       preloader = list(
-        html = htmltools::tagList(waiter::spin_1(), "Loading ..."),
+        html = shiny::tagList(waiter::spin_1(), "Loading ..."),
         color = "#367fa9"
       )
     )

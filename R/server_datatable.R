@@ -59,7 +59,7 @@ value_callback <- function(data) {
 ## @param data A data.frame.
 ## @return The updated list of datatable options.
 add_with_limit_header_JS <- function(options_DT, data) {
-  headerJS <- list(headerCallback = htmlwidgets::JS(header_callback(data)))
+  headerJS <- list(headerCallback = DT::JS(header_callback(data)))
 
   ## Add header code
   options_DT <- c(options_DT, headerJS)
@@ -78,7 +78,7 @@ add_with_limit_header_JS <- function(options_DT, data) {
 add_width_limit_values_JS <- function(options_DT, data) {
   valueJS <- list(
     targets = "_all",
-    render = htmlwidgets::JS(value_callback(data))
+    render = DT::JS(value_callback(data))
   )
 
   ## Extract current columnDefs internal lists (if set)
