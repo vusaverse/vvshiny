@@ -23,44 +23,56 @@ one_column_numeric <- data.frame(
   var1 = rnorm(100)
 )
 
-ui <- fluidPage(
-  tags$h2("Filter data.frame"),
-  radioButtons(
-    inputId = "dataset",
-    label = "Data:",
-    choices = c(
-      "df",
-      "iris",
-      "mtcars",
-      "mtcars_na",
-      "Cars93",
-      "datetime",
-      "one_column_numeric"
-    ),
-    inline = TRUE
-  ),
+basic_vars <- c("INS_Inschrijvingsjaar_EOI", "INS_Faculteit", "INS_Opleidingsnaam_2002")
 
-  fluidRow(
-    column(
-      width = 3,
-      filter_data_ui("filtering", max_height = "500px")
+ui <- function(request) {
+
+  fluidPage(
+    tags$h2("Filter data.frame"),
+    radioButtons(
+      inputId = "dataset",
+      label = "Data:",
+      choices = c(
+        "df",
+        "iris",
+        "mtcars",
+        "mtcars_na",
+        "Cars93",
+        "datetime",
+        "one_column_numeric"
+      ),
+      inline = TRUE
     ),
-    column(
-      width = 9,
-      # progressBar(
-      #   id = "pbar", value = 100,
-      #   total = 100, display_pct = TRUE
-      # ),
-      # reactable::reactableOutput(outputId = "table"),
-      tags$b("Code dplyr:"),
-      verbatimTextOutput(outputId = "code_dplyr"),
-      tags$b("Expression:"),
-      verbatimTextOutput(outputId = "code"),
-      tags$b("Filtered data:"),
-      verbatimTextOutput(outputId = "res_str")
+
+    fluidRow(
+      column(
+        filter_data_ui("filtering", max_height = "500px"),
+        width = 3,
+        shinyWidgets::pickerInput(
+          inputId = "varPicker",
+          label = "Choose filters that are available",
+          choices = NULL,  # Let's start with all possible variables from datasets as choices
+          #selected = ,   # Default selected variables
+          multiple = TRUE,
+          options = list(
+            `actions-box` = TRUE,
+            `live-search` = TRUE,
+            `count-selected-text` = "{0} variables selected"
+          )
+        )
+      ),
+      column(
+        width = 9,
+        tags$b("Code dplyr:"),
+        verbatimTextOutput(outputId = "code_dplyr"),
+        tags$b("Expression:"),
+        verbatimTextOutput(outputId = "code"),
+        tags$b("Filtered data:"),
+        verbatimTextOutput(outputId = "res_str")
+      )
     )
   )
-)
+}
 
 server <- function(input, output, session) {
   savedFilterValues <- reactiveVal()
@@ -73,63 +85,62 @@ server <- function(input, output, session) {
   })
 
   vars <- reactive({
-    if (identical(input$dataset, "mtcars")) {
-      setNames(as.list(names(mtcars)[1:5]), c(
-        "Miles/(US) gallon",
-        "Number of cylinders",
-        "Displacement (cu.in.)",
-        "Gross horsepower",
-        "Rear axle ratio"
-      ))
-    } else {
-      NULL
-    }
+    req(input$varPicker)
+    # Get selected variables from pickerInput
+    vars <- input$varPicker
+
+    # if (any(selected_vars) %in% names(data())) {
+    #   vars <- intersect(selected_vars, names(data()))
+    # } else {
+    #   NULL
+    # }
   })
 
-  # observeEvent(input$saveFilterButton,{
-  #   savedFilterValues <<- res_filter$values()
-  # },ignoreInit = T)
-  #
-  # defaults <- reactive({
-  #   input$loadFilterButton
-  #   savedFilterValues
-  # })
+  observeEvent(data(), {
 
-  res_filter <- filter_data_server(
+    col_names <- data() %>%
+      purrr::keep(~ length(unique(.x)) > 1) %>%
+      names()
+
+    basic_selected <- intersect(basic_vars, col_names)
+    if (length(basic_selected) == 0) {
+      basic_selected <- NULL
+    }
+
+
+
+    shinyWidgets::updatePickerInput(
+      session = session,
+      inputId = "varPicker",
+      choices = col_names,
+      selected = basic_selected
+    )
+  })
+
+  res_filter_basic <- filter_data_server(
     id = "filtering",
     data = data,
     name = reactive(input$dataset),
     vars = vars,
     defaults = reactive(NULL),
+    widget_char = "picker",
     widget_num = "slider",
     widget_date = "slider",
-    label_na = "Missing"
+    label_na = "Onbekend",
+    value_na = TRUE
   )
-#
-#   observeEvent(res_filter$filtered(), {
-#     updateProgressBar(
-#       session = session, id = "pbar",
-#       value = nrow(res_filter$filtered()), total = nrow(data())
-#     )
-#   })
-#
-#   output$table <- reactable::renderReactable({
-#     reactable::reactable(res_filter$filtered())
-#   })
-
 
   output$code_dplyr <- renderPrint({
-    res_filter$code()
+    res_filter_basic$code()
   })
   output$code <- renderPrint({
-    res_filter$expr()
+    res_filter_basic$expr()
   })
 
   output$res_str <- renderPrint({
-    str(res_filter$filtered())
+    str(res_filter_basic$filtered())
   })
 
 }
 
-if (interactive())
-  shinyApp(ui, server)
+shinyApp(ui, server)
